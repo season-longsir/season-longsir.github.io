@@ -35,4 +35,4 @@
 [^11]:程序员
 [^12]:画师   
 
-[hello](https://season-longsir.github.io/hello.html)
+[Hello](https://season-longsir.github.io/hello.html)
