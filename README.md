@@ -25,4 +25,4 @@
     - 张炜杰(程序员)
     - 倪萨尔(画师)    
 
-[Hello](https://season-longsir.github.io/hello.html)
+[Hello](https://season-longsir.github.io/hello.md)
