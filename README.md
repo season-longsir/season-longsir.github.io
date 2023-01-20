@@ -25,4 +25,6 @@
     - 张炜杰(程序员)
     - 倪萨尔(画师)    
 
-[Hello](https://season-longsir.github.io/hello.html)
+[Hello by computer](https://season-longsir.github.io/hello.html)   
+
+[Hello by Mobile phone or tablet computer](https://season-longsir.github.io/hello.md)
