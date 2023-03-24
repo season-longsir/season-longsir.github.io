@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html leng="en">
     <head>
@@ -64,7 +65,13 @@
                 color:white;
             }
         </style>
-        <script></script>
+        <!--
+        <script>
+            document.getElementById("sulei").addEventListener("click", function(){
+                alert("苏老师");
+            });
+        </script>
+        -->
     </head>
     <header>
         <h1 class="head">欢迎来到雅志九班！</h1>
@@ -73,8 +80,9 @@
         <div class="yazhi">
             <img src="furenyazhi.png" alt="雅志九班班徽" id="yazhi">
         </div>
-        <div id="mainText" style="background-color: dimgray;">
+        <div id="mainText" style="background-color: dimgray;border-radius: 25px;">
             <h2>
+                <br>
                 &emsp;&emsp;欢迎来到雅志九班!!!<br>
                 &emsp;&emsp;这里是山大辅仁学校初中2022级九班成员的专属网站!<br>
             </h2>
@@ -89,47 +97,183 @@
                     </tr>
                     <tr style="color: yellow;font-size: 2.5em;">
                         <td>英语</td>
-                        <td>苏雷&emsp;&lt;--班主任</td>
+                        <td>苏老师(苏雷)&emsp;&lt;--班主任
+                            <input type = "button" onclick = "sulei_Click()" value = "点击查看" >
+                                <script>
+                                    function sulei_Click() {
+                                        alert(
+                                            `一位几乎让所有人都把他认错成体育老师的男英语老师，特别喜欢打篮球。
+他做事总是雷厉风行的，喜欢穿黑色的衣服，有时候即使没有什么大事，也会穿着西服。
+他原来是教务主任，后来才当了班主任。
+他对我们在学习上特别严厉，不过玩的时候也能放松玩，只要任务达成了，就可以让我们休息。
+有一次，跑操的时候，要跑三圈，他看我们跑的好，就让我们只跑一圈就休息了，当时十班体育委员看我们的眼神都怪怪的。
+苏老师同时教两个班，一个是我们班，九班，另一个是隔壁的十班，成绩都还不错的。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr style="color: yellow;font-size: 2.4em;">
                         <td>语文</td>
-                        <td>赵航&emsp;&lt;--副班主任</td>
+                        <td>赵老师(赵航)&emsp;&lt;--副班主任
+                            <input type = "button" onclick = "zhaohang_Click()" value = "点击查看" >
+                                <script>
+                                    function zhaohang_Click() {
+                                        alert(
+                                            `一位特别爱笑的语文老师，讲课的时候总是手舞足蹈的。
+她对说脏话这件事抓的很严，不管是谁，说了脏话，她都会特别生气。
+她很年轻，上一届学生是她带的第一届，也就是2019年的，我们是2022级的。
+她总是穿着淡棕色带着粉的衣服，显得很时髦，至少比苏老师是这样。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>数学</td>
-                        <td>李晓</td>
+                        <td>李老师(李晓)
+                            <input type = "button" onclick = "lixiao_Click()" value = "点击查看" >
+                                <script>
+                                    function lixiao_Click() {
+                                        alert(
+                                            `一位特别稳的数学老师，讲课的时候总是不紧不慢地讲。
+她虽然上课的时候看着挺凶的，但是如果你下课去问她问题，她都会笑着，温柔地给你讲。
+她喜欢穿着白色的衣服，还有黑色的。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>生物</td>
-                        <td>张海曼</td>
+                        <td>张老师(张海曼)
+                            <input type = "button" onclick = "zhanghaiman_Click()" value = "点击查看" >
+                                <script>
+                                    function zhanghaiman_Click() {
+                                        alert(
+                                            `一位说话软绵绵的生物老师，讲课的时候总是不紧不慢地讲。
+她讲课的时候很有耐心，讲的都很容易让人理解。
+她喜欢穿着肉色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>地理</td>
-                        <td></td>
+                        <td>马老师()、()
+                            <input type = "button" onclick = "dili_Click()" value = "点击查看" >
+                                <script>
+                                    function dili_Click() {
+                                        alert(
+                                            `一开始是马老师，讲课的时候很温柔，讲的很容易让人理解，很口语化。
+马老师很年迈。
+后来就变成另外一个老师了，说实话，第二个老师没有马老师那么温柔。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>历史</td>
-                        <td>于欢欢</td>
+                        <td>于老师(于欢欢)
+                            <input type = "button" onclick = "yuhuanhuan_Click()" value = "点击查看" >
+                                <script>
+                                    function yuhuanhuan_Click() {
+                                        alert(
+                                            `一位说话很尖的历史老师，讲课的时候目光总是紧盯着所有人。
+她有个口头禅：“温馨提示”，还总是把“xīn”读成“xī”。
+她喜欢穿棕色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>道法</td>
-                        <td>胡月</td>
+                        <td>胡老师(胡月)
+                            <input type = "button" onclick = "huyue_Click()" value = "点击查看" >
+                                <script>
+                                    function huyue_Click() {
+                                        alert(
+                                            `一位说话很圆润的道法老师，讲课的时候声音很温柔。
+如果你没带课本，如果她心情好的话，你只要主动向她道歉就好了。
+她喜欢穿黑蓝色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>音乐</td>
-                        <td>张子文</td>
+                        <td>张老师(张子文)
+                            <input type = "button" onclick = "zhangziwen_Click()" value = "点击查看" >
+                                <script>
+                                    function zhangziwen_Click() {
+                                        alert(
+                                            `一位说话很温柔的音乐老师，讲课的时候总是手舞足蹈的，有时放音乐还会来回渡着步子。
+她很爱笑，笑得时候总是笑得前仰后合的。
+她喜欢穿各种颜色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>体育</td>
-                        <td>刘含月</td>
+                        <td>刘老师(刘含月)
+                            <input type = "button" onclick = "liuhanyue_Click()" value = "点击查看" >
+                                <script>
+                                    function liuhanyue_Click() {
+                                        alert(
+                                            `一位很可爱的体育老师，上课的时候总是重复的做着一个动作：手上下地晃着。
+他对那些调皮的学生有些没有办法。
+她喜欢穿白色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>信息</td>
-                        <td></td>
+                        <td>孟老师()、()
+                            <input type = "button" onclick = "xinxi_Click()" value = "点击查看" >
+                                <script>
+                                    function xinxi_Click() {
+                                        alert(
+                                            `一开始是孟老师，一位说话很稳重的信息老师，他很年迈。
+他喜欢穿黑蓝色的衣服。
+后来换成了一个年轻的女老师，她上课的氛围很轻松。
+她喜欢穿蓝色，红色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>美术</td>
-                        <td></td>
+                        <td>马老师()
+                            <input type = "button" onclick = "meishu_Click()" value = "点击查看" >
+                                <script>
+                                    function meishu_Click() {
+                                        alert(
+                                            `一位说话很稳重的美术老师，讲课的时候目光飘移不定。
+她喜欢穿棕色的衣服。`
+                                        );
+                                    }
+                                </script>
+                            </input>
+                        </td>
                     </tr>
                 </table>
             </div>
