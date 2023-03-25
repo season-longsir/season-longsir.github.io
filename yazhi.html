@@ -63,6 +63,23 @@
             {
                 color:white;
             }
+            #footer {
+                /*
+                height: 40px;
+                line-height: 40px;
+                position: fixed;
+                */
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background: #333;
+                color: #fff;
+                font-family: Arial;
+                font-size: 2em;
+                border-radius: 25px;
+                /*letter-spacing: 1px;
+                border-radius: 25px;*/
+            }
         </style>
         <script>
             alert("欢迎来到雅志九班！");
@@ -145,6 +162,16 @@
                     `一位很可爱的体育老师，上课的时候总是重复的做着一个动作：手上下地晃着。
 他对那些调皮的学生有些没有办法。
 他喜欢穿白色的衣服。`
+                );
+            }
+            function banbenhao_Click() {
+                alert(
+                    `V1.0制作初版网站
+V1.1更改人名信息
+V1.2添加老师的个人介绍
+V1.3修改已知bug，美化代码格式
+V1.4添加尾页(版权页)
+预计下一版(V1.5)：添加部分同学的个人介绍`
                 );
             }
         </script>
@@ -421,6 +448,14 @@
                 学生姓名后面带上标符号(^)的是七下(2023春季)转学来的……<br>
                 给体育老师道个歉，之前把名字写错了……现在改过来了……
             </h3>
+        </div>
+        <div id="footer">
+            制作者：季节<br>
+            QQ：3389786744<br>
+            班级：九班<br>
+            学校：山大辅仁学校(中学)<br>
+            返回个人主页：<a href="https://season-longsir.github.io">https://season-longsir.github.io</a><br>
+            <input type = "button" onclick = "banbenhao_Click()" value = "点击查看版本号" ></input>
         </div>
     </body>
 </html>
