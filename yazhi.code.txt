@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html leng="en">
+    <head>
+        <title>雅志九班</title>
+        <meta charset="utf-8">
+        <style>
+            h1.head
+            {
+                text-align: center;
+                text-decoration:overline;
+                font-size:3.75em;
+                color: orange;
+                border-radius: 25px;
+            }
+            h1
+            {
+                /*width:100px;
+                height:100px;*/
+                background:red;
+                position:relative;
+                animation-name:headtitlestyle;
+                animation-duration:5s;
+                animation-timing-function:linear;
+                animation-delay:2s;
+                animation-iteration-count:infinite;
+                animation-direction:alternate;
+                animation-play-state:running;
+                -webkit-animation-name:headtitlestyle;
+                -webkit-animation-duration:5s;
+                -webkit-animation-timing-function:linear;
+                -webkit-animation-delay:2s;
+                -webkit-animation-iteration-count:infinite;
+                -webkit-animation-direction:alternate;
+                -webkit-animation-play-state:running;
+            }
+
+            @keyframes headtitlestyle
+            {
+                0%   {background:red;}
+                25%  {background:yellow;}
+                50%  {background:blue;}
+                75%  {background:green;}
+                100% {background:red;}
+            }
+
+            @-webkit-keyframes headtitlestyle 
+            {
+                0%   {background:red;}
+                25%  {background:yellow;}
+                50%  {background:blue;}
+                75%  {background:green;}
+                100% {background:red;}
+            }
+            div.yazhi
+            {
+                text-align: center;
+            }
+            #yazhi
+            {
+                display: inline-block;
+            }
+            div#mainText
+            {
+                color:white;
+            }
+            #footer {
+                /*
+                height: 40px;
+                line-height: 40px;
+                position: fixed;
+                */
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background: #333;
+                color: #fff;
+                font-family: Arial;
+                font-size: 2em;
+                border-radius: 25px;
+                /*letter-spacing: 1px;
+                border-radius: 25px;*/
+            }
+            #zpq {
+                background-color: bisque;
+                border-radius: 25px;
+            }
+            #jbtm {
+                background-color: gold;
+                border-radius: 25px;
+            }
+        </style>
+        <script>
+            alert("欢迎来到雅志九班！");
+            function meishu_Click() {
+                alert(
+                    `一位说话很稳重的美术老师，讲课的时候目光飘移不定。
+她喜欢穿棕色的衣服。`
+                );
+            }
+            function xinxi_Click() {
+                alert(
+                    `一开始是孟老师，一位说话很稳重的信息老师，他很年迈。
+他喜欢穿黑蓝色的衣服。
+后来换成了一个年轻的女老师，她上课的氛围很轻松。
+她喜欢穿蓝色，红色的衣服。`
+                );
+            }
+            function sulei_Click() {
+                alert(
+                    `一位几乎让所有人都把他认错成体育老师的男英语老师，特别喜欢打篮球。
+他做事总是雷厉风行的，喜欢穿黑色的衣服，有时候即使没有什么大事，也会穿着西服。
+他原来是教务主任，后来才当了班主任。
+他对我们在学习上特别严厉，不过玩的时候也能放松玩，只要任务达成了，就可以让我们休息。
+有一次，跑操的时候，要跑三圈，他看我们跑的好，就让我们只跑一圈就休息了，当时十班体育委员看我们的眼神都怪怪的。
+苏老师同时教两个班，一个是我们班，九班，另一个是隔壁的十班，成绩都还不错的。`
+                );
+            }
+            function zhaohang_Click() {
+                alert(
+                    `一位特别爱笑的语文老师，讲课的时候总是手舞足蹈的。
+她对说脏话这件事抓的很严，不管是谁，说了脏话，她都会特别生气。
+她很年轻，上一届学生是她带的第一届，也就是2019年的，我们是2022级的。
+她总是穿着淡棕色带着粉的衣服，显得很时髦，至少比苏老师是这样。`
+                );
+            }
+            function lixiao_Click() {
+                alert(
+                    `一位特别稳的数学老师，讲课的时候总是不紧不慢地讲。
+她虽然上课的时候看着挺凶的，但是如果你下课去问她问题，她都会笑着，温柔地给你讲。
+她喜欢穿着白色的衣服，还有黑色的。
+后来又换成了位老师，因为李老师怀孕了……
+位老师一开始给人的感觉不是很好，但是久了以后也能发现她其实特别幽默……
+幽默的时候还非常认真……
+总体来说也要比李老师好一点……`
+                );
+            }
+            function zhanghaiman_Click() {
+                alert(
+                    `一位说话软绵绵的生物老师，讲课的时候总是不紧不慢地讲。
+她讲课的时候很有耐心，讲的都很容易让人理解。
+她喜欢穿着肉色的衣服。`
+                );
+            }
+            function dili_Click() {
+                alert(
+                    `一开始是马老师，讲课的时候很温柔，讲的很容易让人理解，很口语化。
+马老师很年迈。
+后来就变成王老师了，说实话，王老师没有马老师那么温柔。`
+                );
+            }
+            function yuhuanhuan_Click() {
+                alert(
+                    `一位说话很尖的历史老师，讲课的时候目光总是紧盯着所有人。
+她有个口头禅：“温馨提示”，还总是把“xīn”读成“xī”。
+她喜欢穿棕色的衣服。`
+                );
+            }
+            function huyue_Click() {
+                alert(
+                    `一位说话很圆润的道法老师，讲课的时候声音很温柔。
+如果你没带课本，如果她心情好的话，你只要主动向她道歉就好了。
+她喜欢穿黑蓝色的衣服。`
+                );
+            }
+            function zhangziwen_Click() {
+                alert(
+                    `一位说话很温柔的音乐老师，讲课的时候总是手舞足蹈的，有时放音乐还会来回渡着步子。
+她很爱笑，笑得时候总是笑得前仰后合的。
+她喜欢穿各种颜色的衣服。`
+                );
+            }
+            function liuhanyue_Click() {
+                alert(
+                    `一位很可爱的体育老师，上课的时候总是重复的做着一个动作：手上下地晃着。
+他对那些调皮的学生有些没有办法。
+他喜欢穿白色的衣服。`
+                );
+            }
+            function banbenhao_Click() {
+                alert(
+                    `V1.0制作初版网站
+V1.1更改人名信息
+V1.2添加老师的个人介绍
+V1.3修改已知bug，美化代码格式
+V1.4添加尾页(版权页)
+V1.5添加部分同学的个人介绍
+V1.6添加模块“作品墙”
+V1.7增加文本，添加模块“金榜题名”`
+                );
+            }
+            function kaifazhe_Click() {
+                alert(
+                    `开发者：
+    NortH主管——季节
+鸣谢（排名无先后顺序）：
+    NortH主管——阳哥
+    NortH网站程序员——HSXL
+    李润桐
+    刘恩琪
+    刘轩闻
+    张淑彦`
+                );
+            }
+            function chenzhengrun_Click() {
+                alert(
+                    `挺调皮的一个同学，小学时是七班的。
+他喜欢打篮球。
+他上课的时候喜欢斜着坐，跟后位聊天。`
+                );
+            }
+            function chengxihao_Click() {
+                alert(
+                    `一位小胖子……
+数学挺好……
+就是有点过于可爱……`
+                );
+            }
+            function cuijunxi_Click() {
+                alert(
+                    `说实话有点烦……
+历史课代表`
+                );
+            }
+            function daixingye_Click() {
+                alert(
+                    `挺胖
+英语超棒
+数学课代表`
+                );
+            }
+            function hanjingyu_Click() {
+                alert(
+                    `瘦高
+跑步超快，曾经因为运动会差点被体校挖走……`
+                );
+            }
+            function jijie_Click() {
+                alert(
+                    `就是开发者本人——我自己啦！
+咳咳，我平常是非常喜欢编程的，就如同你所看到的一样……
+会的语言比较多啦：Python，C++，Java，HTML5，CSS3，Javascript，MySQL，CSharp……
+当然如果算的话，我还会：Markdown，Json等文本标记语言……
+好了，不扯这些，相信你听懂的很少……咳咳！
+当然，我除了编程，还喜欢大提琴……
+学习也比较好吧？应该是的！`
+                );
+            }
+        </script>
+    </head>
+    <header>
+        <h1 class="head">欢迎来到雅志九班！</h1>
+    </header>
+    <body>
+        <div class="yazhi">
+            <img src="furenyazhi.png" alt="雅志九班班徽" id="yazhi">
+        </div>
+        <div id="mainText" style="background-color: dimgray;border-radius: 25px;">
+            <h2>
+                <br>
+                &emsp;&emsp;欢迎来到雅志九班!!!<br>
+                &emsp;&emsp;这里是山大辅仁学校初中2022级九班成员的专属网站!<br>
+                &emsp;&emsp;注：请勿用QQ内置的浏览器，这样会导致部分功能不可用！<br>
+            </h2>
+            <h2 style="color: orangered;">
+                <br>
+                &emsp;&emsp;(本网站的更新可能会有些慢，作者将会按照学号顺序写各同学的介绍。当然，如果你想让我更快地写到你，你可以找到<i>-&gt;季节&lt;-</i>，并说出口令<i>cptbtptpbcptdtptp</i>即可获得写介绍的优先权！)<br>
+                <br>
+            </h2>
+            <h2 style="text-align: center;font-size: 2.3em;">
+                成员名单<br>
+            </h2>
+            <div class="yazhi">
+                <table border="2" style="text-align: center;font-size: 2.3em;" id="yazhi">
+                    <tr>
+                        <th>科目</th>
+                        <th>老师姓名</th>
+                    </tr>
+                    <tr style="color: yellow;font-size: 2.5em;">
+                        <td>英语</td>
+                        <td>苏老师(苏雷)&emsp;&lt;--班主任
+                            <input type = "button" onclick = "sulei_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr style="color: yellow;font-size: 2.4em;">
+                        <td>语文</td>
+                        <td>赵老师(赵航)&emsp;&lt;--副班主任
+                            <input type = "button" onclick = "zhaohang_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数学</td>
+                        <td>李老师(李晓)、位老师(位京美)
+                            <input type = "button" onclick = "lixiao_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>生物</td>
+                        <td>张老师(张海曼)
+                            <input type = "button" onclick = "zhanghaiman_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>地理</td>
+                        <td>马老师()、王老师(王蔚蔚)
+                            <input type = "button" onclick = "dili_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>历史</td>
+                        <td>于老师(于欢欢)
+                            <input type = "button" onclick = "yuhuanhuan_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>道法</td>
+                        <td>胡老师(胡月)
+                            <input type = "button" onclick = "huyue_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>音乐</td>
+                        <td>张老师(张子文)
+                            <input type = "button" onclick = "zhangziwen_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>体育</td>
+                        <td>刘老师(刘含月)
+                            <input type = "button" onclick = "liuhanyue_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>信息</td>
+                        <td>孟老师(孟祥义)、()
+                            <input type = "button" onclick = "xinxi_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>美术</td>
+                        <td>马老师()
+                            <input type = "button" onclick = "meishu_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="yazhi">
+                <table border="2" style="text-align: center;font-size: 2.3em;" id="yazhi">
+                    <tr>
+                        <th>学号</th>
+                        <th>学生姓名</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>陈郑润
+                            <input type = "button" onclick = "chenzhengrun_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>程熙皓
+                            <input type = "button" onclick = "chengxihao_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>崔峻熙
+                            <input type = "button" onclick = "cuijunxi_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>戴星烨
+                            <input type = "button" onclick = "daixingye_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>韩景宇
+                            <input type = "button" onclick = "hanjingyu_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>韩其威</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>韩旭</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>何昊展</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>何沛颖</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>胡馨月</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>华志恒</td>
+                    </tr>
+                    <tr style="color: yellow;font-size: 2.5em;">
+                        <td>12</td>
+                        <td>季节&emsp;&lt;--开发的人就是我!
+                            <input type = "button" onclick = "jijie_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>景楚涵</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>孔泽檀</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>李润桐</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>李想</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>梁芷宁</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>刘恩琪</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>刘金轩</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>刘轩闻</td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td>娄铭宇</td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td>马昕源</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>马一雯</td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td>荣泽怡</td>
+                    </tr>
+                    <tr>
+                        <td>25</td>
+                        <td>石羽晞</td>
+                    </tr>
+                    <tr>
+                        <td>26</td>
+                        <td>王芊茜</td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td>王蕴哲</td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td>王昭蓥</td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td>魏羽朔</td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td>吴梦锦*</td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td>闫书格</td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td>杨子宸</td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td>乙晓文</td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td>岳佳辰</td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td>张澜夕</td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td>张淑彦</td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td>张硕涵</td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td>张梓墨</td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td>张梓婷</td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td>周彦柏</td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td>贺英杰*</td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td>常峻源^</td>
+                    </tr>
+                </table>
+            </div>
+            <h3 style="text-align: center;">
+                注:有些老师名空着是因为忘了叫啥名……<br>
+                学生姓名后面带星号(*)的是转学走的……<br>
+                学生姓名后面带上标符号(^)的是七下(2023春季)转学来的……<br>
+                给体育老师道个歉，之前把名字写错了……现在改过来了……
+            </h3>
+        </div>
+        <div id="zpq">
+            <h2 style="text-align: center;">
+                作品墙
+            </h2>
+            <br>
+            <h3 style="text-align: center;">
+                有些被我选中的作品会放在这里哦！<br>
+                <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
+                <br>
+            </h3>
+        </div>
+        <div id="jbtm">
+            <h2 style="text-align: center;">
+                金榜题名
+            </h2>
+            <br>
+            <h3 style="text-align: center;">
+                当每次考试完成后，将会把某些人的排名放进来哦！<br>
+                恭喜<big>班长·刘轩闻</big>、<big>纪律委员·李润桐</big>、<big>生活委员·季节</big>荣获2023学年初一下学期<big>优秀班干部</big>称号！<br>
+                恭喜<big>刘轩闻</big>、<big>李润桐</big>、<big>季节</big>等十人荣获2023学年初一下学期<big>特长生</big>称号！<br>
+                <small>注：特长生我真的忘了有哪几个人了……sorry~</small><br>
+                <br>
+            </h3>
+        </div>
+        <div id="footer">
+            开发团：NortH&copy;<br>
+            QQ：3389786744<br>
+            班级：九班<br>
+            学校：山大辅仁学校(中学)<br>
+            返回个人主页：<a href="https://season-longsir.github.io">https://season-longsir.github.io</a><br>
+            <input type = "button" onclick = "banbenhao_Click()" value = "点击查看版本号" ></input>
+            <input type = "button" onclick = "kaifazhe_Click()" value = "点击查看开发者/鸣谢" ></input>
+        </div>
+    </body>
+</html>
