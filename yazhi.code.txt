@@ -3,7 +3,7 @@
     <head>
         <title>雅志九班</title>
         <meta charset="utf-8">
-        <link rel="icon" href="https://season-longsir.github.io/yazhi.jpg" sizes="16x16">
+        <link rel="shortcut icon" href="/yazhi.ico?">
         <style>
             h1.head
             {
