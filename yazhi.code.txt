@@ -92,6 +92,8 @@
         </style>
         <script>
             alert("欢迎来到雅志九班！");
+            alert("请不要只看成员列表，又更新了“作品墙”和“金榜题名”两个模块哦！记得往下看！");
+            alert("本网站由OUO独家冠名支持！！！");
             function meishu_Click() {
                 alert(
                     `一位说话很稳重的美术老师，讲课的时候目光飘移不定。
@@ -547,6 +549,7 @@ V1.7增加文本，添加模块“金榜题名”`
             <h3 style="text-align: center;">
                 有些被我选中的作品会放在这里哦！<br>
                 <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
+                <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by匿名投稿</a><br>
                 <br>
             </h3>
         </div>
