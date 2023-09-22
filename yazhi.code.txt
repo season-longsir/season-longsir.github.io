@@ -110,7 +110,8 @@
                     `一开始是孟老师，一位说话很稳重的信息老师，他很年迈。
 他喜欢穿黑蓝色的衣服。
 后来换成了一个年轻的女老师，她上课的氛围很轻松。
-她喜欢穿蓝色，红色的衣服。`
+她喜欢穿蓝色，红色的衣服。
+额，然后八上又换了一个新老师，将Python(我最擅长的语言~)`
                 );
             }
             function sulei_Click() {
@@ -139,7 +140,9 @@
 后来又换成了位老师，因为李老师怀孕了……
 位老师一开始给人的感觉不是很好，但是久了以后也能发现她其实特别幽默……
 幽默的时候还非常认真……
-总体来说也要比李老师好一点……`
+总体来说也要比李老师好一点……
+e 至于张老师……我对她的评价并不是很高……
+不知道为什么，听她的课有点犯困……`
                 );
             }
             function zhanghaiman_Click() {
@@ -253,6 +256,17 @@ V1.7增加文本，添加模块“金榜题名”`
 学习也比较好吧？应该是的！`
                 );
             }
+            function wuli_Click() {
+                alert(
+                    `物理老师胡老师，扎着辫子。
+心思令人无法捉摸，你永远不知道她下一步想要干什么……`
+                );
+            }
+            function gengxinshijian_Click() {
+                alert(
+                    `上一次完成编辑：2023.9.22/20：30`
+                );
+            }
         </script>
     </head>
     <header>
@@ -297,7 +311,7 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>数学</td>
-                        <td>李老师(李晓)、位老师(位京美)
+                        <td>李老师(李晓)、位老师(位京美)、张老师(张永)
                             <input type = "button" onclick = "lixiao_Click()" value = "点击查看" ></input>
                         </td>
                     </tr>
@@ -339,7 +353,7 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>信息</td>
-                        <td>孟老师(孟祥义)、()
+                        <td>孟老师(孟祥义)、()、()
                             <input type = "button" onclick = "xinxi_Click()" value = "点击查看" ></input>
                         </td>
                     </tr>
@@ -347,6 +361,12 @@ V1.7增加文本，添加模块“金榜题名”`
                         <td>美术</td>
                         <td>马老师()
                             <input type = "button" onclick = "meishu_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>物理</td>
+                        <td>胡老师(胡璇)
+                            <input type = "button" onclick = "wuli_Click()" value = "点击查看" ></input>
                         </td>
                     </tr>
                 </table>
@@ -537,12 +557,17 @@ V1.7增加文本，添加模块“金榜题名”`
                         <td>42</td>
                         <td>常峻源^</td>
                     </tr>
+                    <tr>
+                        <td>43</td>
+                        <td>刘书铭&</td>
+                    </tr>
                 </table>
             </div>
             <h3 style="text-align: center;">
                 注:有些老师名空着是因为忘了叫啥名……<br>
                 学生姓名后面带星号(*)的是转学走的……<br>
                 学生姓名后面带上标符号(^)的是七下(2023春季)转学来的……<br>
+                学生姓名后面带按位与符号(&)的是八上(2023秋季)转学来的……<br>
                 给体育老师道个歉，之前把名字写错了……现在改过来了……
             </h3>
         </div>
@@ -554,7 +579,8 @@ V1.7增加文本，添加模块“金榜题名”`
             <h3 style="text-align: center;">
                 有些被我选中的作品会放在这里哦！<br>
                 <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
-                <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by匿名投稿</a><br>
+                <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by曙猫書(原作者不想透露其姓名)</a><br>
+                敬请期待由何沛颖同学带来的小说《雅志王国》<br>
                 <br>
             </h3>
         </div>
@@ -590,6 +616,7 @@ V1.7增加文本，添加模块“金榜题名”`
             查看网站源码（公开）:<a href="https://season-longsir.github.io/yazhi.code.txt">https://season-longsir.github.io/yazhi.code.txt</a><br>
             <input type = "button" onclick = "banbenhao_Click()" value = "点击查看版本号" ></input>
             <input type = "button" onclick = "kaifazhe_Click()" value = "点击查看开发者/鸣谢" ></input>
+            <input type = "button" onclick = "gengxinshijian_Click()" value = "点击查看更新时间" ></input>
         </div>
     </body>
 </html>
