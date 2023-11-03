@@ -92,12 +92,17 @@
             #ouo {
                 background-color: rgb(186, 49, 231);
                 border-radius: 25px;
-                color:aqua
+                color:aqua;
+            }
+            #wenda {
+                background-color: darkgrey;
+                border-radius: 25px;
+                color: #fff;
             }
         </style>
         <script>
             alert("欢迎来到雅志九班！");
-            alert("请不要只看成员列表，又更新了“作品墙”和“金榜题名”两个模块哦！记得往下看！");
+            alert("请不要只看成员列表，又更新了“作品墙”和“金榜题名”等多个模块哦！记得往下看！");
             alert("本网站由OUO独家冠名支持！！！");
             function meishu_Click() {
                 alert(
@@ -264,7 +269,17 @@ V1.7增加文本，添加模块“金榜题名”`
             }
             function gengxinshijian_Click() {
                 alert(
-                    `上一次完成编辑：2023.9.22/20：30`
+                    `上一次完成编辑：2023.11.3/21：00`
+                );
+            }
+            function wrong_Click() {
+                alert(
+                    `答错啦`
+                );
+            }
+            function true_Click() {
+                alert(
+                    `恭喜你答对啦`
                 );
             }
         </script>
@@ -353,7 +368,7 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>信息</td>
-                        <td>孟老师(孟祥义)、()、()
+                        <td>孟老师(孟祥义)、()、李老师(李家亮)
                             <input type = "button" onclick = "xinxi_Click()" value = "点击查看" ></input>
                         </td>
                     </tr>
@@ -580,7 +595,7 @@ V1.7增加文本，添加模块“金榜题名”`
                 有些被我选中的作品会放在这里哦！<br>
                 <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
                 <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by曙猫書(原作者不想透露其姓名)</a><br>
-                敬请期待由何沛颖同学带来的小说《雅志王国》<br>
+                <del>敬请期待由何沛颖同学带来的小说《雅志王国》</del><br>
                 <br>
             </h3>
         </div>
@@ -606,6 +621,46 @@ V1.7增加文本，添加模块“金榜题名”`
                 详情请查看OUO官网：<a href="https://season-longsir.github.io/ouo.html">https://season-longsir.github.io/ouo.html</a><br>
                 <br>
             </h3>
+        </div>
+        <div id="wenda">
+            <h2 style="text-align: center;">
+                问答
+            </h2>
+            <br>
+            <h3 style="text-align: center;">
+                简单EASY：
+                <br><br>
+                &emsp;&emsp;1.下列选项中，没有当过班长的是：&emsp;
+                A：刘轩闻<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                B：张淑彦<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                C：石羽晞<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                D：王蕴哲<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                <br>
+                &emsp;&emsp;2.下列选项中，学号大于20的是：&emsp;
+                A：季节<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                B：刘轩闻<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                C：刘金轩<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                D：李想<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                <br>
+                &emsp;&emsp;3.下列选项中，学习最差的是：&emsp;
+                A：李润桐<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                B：常峻源<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                C：杨子宸<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                D：刘恩琪<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                <br>
+                &emsp;&emsp;4.下列选项中，不是数学老师的是：&emsp;
+                A：李晓老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                B：王蔚薇老师<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                C：位京美老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                D：张永老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                <br>
+                &emsp;&emsp;5.下列选项中，是男老师的是：&emsp;
+                A：英语苏老师<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                B：数学张老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                C：语文赵老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                D：物理胡老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+            </h3>
+            <br>
         </div>
         <div id="footer">
             开发团：NortH&copy;<br>
