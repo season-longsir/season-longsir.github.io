@@ -10,21 +10,84 @@
 
 你好呀！   
 
-看看我们的团队吧：
-- NGU：
-    - 龙sir(团队主导人,总编)
-    - okr(程序总编,网站程序员)
-    - 我无语(辅助程序员)
-    - oka(程序员)
-    - oke(程序员)
-    - 菜菜(网站程序员)
-    - kop(辅助程序员,辅助网站程序员)
-    - 阳哥(程序员)
-    - sensei(程序员)
-    - 阳佟雨寒(调试,安全)
-    - 张炜杰(程序员)
-    - 倪萨尔(画师)    
+[前往雅志九班](https://season-longsir.github.io/yazhi.html)   
 
-[Hello by computer](https://season-longsir.github.io/hello.html)   
+[前往我的网页](https://season-longsir.github.io/myself/home.html)
 
-[Hello by Mobile phone or tablet computer](https://season-longsir.github.io/hello.md)
+[前往洛谷](https://www.luogu.com.cn/user/1107983#main)
+
+
+# 洛谷---
+
+# 我叫季节
+## Season
+### 2010.02.01
+
+
+------------
+
+#### 小学：山大辅仁学校2016.7
+#### 中学：山大辅仁学校2022.9
+
+
+------------
+我会：
+
+**Python**
+```python
+print('Hello world!')
+```
+**C++**
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+	cout<<"Hello world!"<<endl;
+	return 0;
+}
+```
+**Java**
+```java
+class Hello{
+	public static void main(String[] args){
+		System.out.println("Hello world!");
+	}
+}
+```
+**HTML5、CSS3、JavaScript**
+
+ _这里先只展示HTML5的内容_ 
+```html
+<!--HTML5-->
+<!DOCTYPE html>
+<html leng="en">
+	<head>
+      <title>Hello world!</title>
+  	</head>
+  	<body>
+      <p>Hello world!</p>
+  	</body>
+</html>
+```
+**C#**
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HelloWorld
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+			Console.WriteLine("Hello World !");
+        }
+    }
+}
+
+```
+**其实还有很多，如MySQL等，就不一一赘述了。**
+
