@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html leng="en">
-  <head>
-    <title>About Myself</title>
-  </head>
-  <body>
-    <div>
-      Hello! This is my <i>pric</i> page.
-    </div>
-  </body>
+    <head>
+        <title>关于我自己</title>
+        <meta charset="utf-8">
+        <style>
+            h1.head
+            {
+                text-align: center;
+                text-decoration:overline;
+                font-size:3.75em;
+                color: orange;
+                border-radius: 25px;
+            }
+            h1
+            {
+                /*width:100px;
+                height:100px;*/
+                background:red;
+                position:relative;
+                animation-name:headtitlestyle;
+                animation-duration:5s;
+                animation-timing-function:linear;
+                animation-delay:2s;
+                animation-iteration-count:infinite;
+                animation-direction:alternate;
+                animation-play-state:running;
+                -webkit-animation-name:headtitlestyle;
+                -webkit-animation-duration:5s;
+                -webkit-animation-timing-function:linear;
+                -webkit-animation-delay:2s;
+                -webkit-animation-iteration-count:infinite;
+                -webkit-animation-direction:alternate;
+                -webkit-animation-play-state:running;
+            }
+
+            @keyframes headtitlestyle
+            {
+                0%   {background:red;}
+                25%  {background:yellow;}
+                50%  {background:blue;}
+                75%  {background:green;}
+                100% {background:red;}
+            }
+
+            @-webkit-keyframes headtitlestyle 
+            {
+                0%   {background:red;}
+                25%  {background:yellow;}
+                50%  {background:blue;}
+                75%  {background:green;}
+                100% {background:red;}
+            }
+            div#mainText
+            {
+                color:white;
+            }
+            #footer {
+                /*
+                height: 40px;
+                line-height: 40px;
+                position: fixed;
+                */
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background: #333;
+                color: #fff;
+                font-family: Arial;
+                font-size: 2em;
+                border-radius: 25px;
+                /*letter-spacing: 1px;
+                border-radius: 25px;*/
+            }
+        </style>
+    </head>
+    <header>
+        <h1 class="head">欢迎来到我的个人主页！</h1>
+    </header>
+    <body>
+        <div id="mainText" style="background-color: dimgray;border-radius: 25px;">
+            <h2>
+                <br>
+                &emsp;&emsp;欢迎来到我的个人主页!!!<br>
+                &emsp;&emsp;这里是季节专属网站!<br>
+            </h2>
+            <h2 style="color: orangered;">
+                <br>
+                &emsp;&emsp;我叫季节！<br>
+                &emsp;&emsp;额，当然，我还有很多名字，你叫我“龙sir”、“曙猫書”、“猫sir”都可以啦~<br>
+                &emsp;&emsp;QQ：3389786744<br>
+                &emsp;&emsp;WX：Season100201-136688<br>
+                &emsp;&emsp;TEL：18253170118<br>
+                <br>
+                &emsp;&emsp;emm...我喜欢编程，我是会很多编程语言的哦~<br>
+                &emsp;&emsp;像……<br>
+                &emsp;&emsp;<i>Python / C++ / Java / HTML / CSS / JavaScript / C# / MySQL / TypeScript / Json / Markdown / Go</i>等等等等……<br>
+                &emsp;&emsp;好了，不占用你的时间了，再见！<br>
+                <br>
+            </h2>
+        </div>
+        <br><br>
+        <div id="footer">
+            开发团：NortH&copy;<br>
+            QQ：3389786744<br>
+            返回主页：<a href="https://season-longsir.github.io">https://season-longsir.github.io</a><br>
+        </div>
+    </body>
 </html>
