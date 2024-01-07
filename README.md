@@ -4,20 +4,16 @@
 
 ### 很高兴见到你   
 
-***   
+***         
 
-我是*龙sir*,*2010.2.1*出生,I'm a little *boy*   
+- [前往雅志九班](https://season-longsir.github.io/yazhi.html)   
 
-你好呀！   
+- [前往我的网页](https://season-longsir.github.io/myself/home.html)
 
-[前往雅志九班](https://season-longsir.github.io/yazhi.html)   
-
-[前往我的网页](https://season-longsir.github.io/myself/home.html)
-
-[前往洛谷](https://www.luogu.com.cn/user/1107983#main)
+- [前往洛谷](https://www.luogu.com.cn/user/1107983#main)
 
 
-# 洛谷---
+# 洛谷：
 
 # 我叫季节
 ## Season
