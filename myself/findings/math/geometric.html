@@ -1,9 +1,39 @@
-<!DOCTYPE html>
-<html leng="en">
-  <head>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
     <title>Geometric</title>
-  </head>
-  <body>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        code {
+            background-color: rgba(175,184,193,.4);
+            padding: 2px 4px;
+            border-radius: 4px 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <hr />
+    <pre id="markdown">
+    # Marked in the browser
+Rendered by **marked**.    
+    </pre>
+    <script>
+        s1 = '# Marked in the browser\nRendered by **marked**.'
+        s2 = document.getElementById('markdown').innerHTML.trim()
+        // 注意：markdown对语句前面的空格和换行是非常敏感的，必须使用pre元素识别换行符
+        console.log(s1)
+        console.log(s2)
+        console.log(s1 == s2)
+        document.getElementById('content').innerHTML = marked.parse(s2);
+
+        const blockHtml = marked.parse('**strong** _em_');
+        //console.log(blockHtml); // '<p><strong>strong</strong> <em>em</em></p>'
+
+        const inlineHtml = marked.parseInline('**strong** _em_');
+        //console.log(inlineHtml); // '<strong>strong</strong> <em>em</em>'
+    </script>
     <code markdown>
 # 我的发现：
 
@@ -31,12 +61,13 @@
 
 -  $ \angle BPM = \frac{x - 1}{x - 2} \alpha $
     </code>
-    <script src="https://cdn.jsdelivr.net/npm/marked@3.0.0/marked.min.js"></script>
     <script>
-      var m=document.querySelectorAll('code[markdown]');
-      for(var i=0;i<m.length;i++){
-        m[i].outerHTML='<div>'+marked(m[i].innerHTML)+'</div>';
-      }
-    </script>
-  </body>
+        var m = document.querySelectorAll('code[markdown]');
+        for (var i = 0; i < m.length; i++) {
+            console.log(m[i].innerHTML.trim())
+            console.log(marked.parse(m[i].innerHTML.trim()))
+            m[i].outerHTML = marked.parse(m[i].innerHTML.trim());   //此处不使用trim()就没有作用
+            console.log(m[i].outerHTML)   // 实际元素内容已变，引用内容仍是原元素
+        }</script>
+</body>
 </html>
