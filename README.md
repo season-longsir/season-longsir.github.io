@@ -89,10 +89,6 @@ namespace HelloWorld
 
 # Some what?
 
-- 费华函数：设$`f(x)`$ 的定义域为 $`I`$ ，在$`I`$中存在一$`m`$，使$`m \neq f(m)`$，$`f(m)= \sin (m-1)`$，且$` \forall x \in \{ t \rvert t \in I, t \neq m \} `$，$`f(x) \neq \sin (x-1)`$，那么称$`f(x)`$是关于$`m`$的费华函数。
-
-- 费华定理：如果存在函数$`f(x)`$的定义域为$`I`$，有一非负整数$`m \in I`$，存在$`x \in I`$，满足$`x+m \neq f(x)+f(m)`$，$`m=f( \sin (mx+1))`$，那么$`m \in \mathbb{N} `$
-
-- 费华二定理：如果存在函数$`f(x)`$是$`m`$的费华函数，定义域为$`I`$，$`m \in \mathbb{N} `$，存在一$`x \in \{ t \rvert t \in I, t \neq m \} `$，满足$`x+m \in \mathbb{Z} `$，$`f(x)=-f(m)`$，那么$`x-m \in \mathbb{Z} `$
+![费华](wasteSaying.png)
 
 ~~由此，费华函数、费华定理与费华二定理统称费华，又称废话，因为他的结论都是包含在条件中的（doge）~~
