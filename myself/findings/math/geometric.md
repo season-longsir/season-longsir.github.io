@@ -8,7 +8,7 @@
 
 ##### 条件：
 
--  设有一个等腰三角形ABC，AB = AC，且设此等腰三角形的底角为$ \alpha $
+-  设有一个等腰三角形ABC，AB = AC，且设此等腰三角形的底角为$` \alpha `$
 
 -  设AB、AC两条边上分别有点，分别为M、N
 
@@ -22,4 +22,4 @@
 
 ##### 结论：
 
--  $ \angle BPM = \frac{x - 1}{x - 2} \alpha $
+-  $` \angle BPM = \frac{x - 1}{x - 2} \alpha `$
