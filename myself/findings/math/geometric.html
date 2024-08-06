@@ -1,43 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <script>
-    MathJax = {
-        tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
-    };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-<body>
-    <!--
-    <p>
-        When $a \ne 0$, there are two solutions to $ax^2 + bx + c = 0$ and they are
-        $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
-    </p>
-    -->
-    <hr>
-    <div id="content" ></div>
-    <script>
-      // 1. 调用 parse 方法，将对应的 markdown 文本内容转译为 html 页面；
-  	let parsedHtml = marked.parse(`# 我的发现：
-
-## 数学：
-
-### 几何\-\(geometric)
-
-#### First：
-
-<p><img src="\geofp.png" alt="geofp" /></p>
-
-<p><img src="\geofm.png" alt="geofm" /></p>
- 
-    document.getElementById('content').innerHTML = parsedHtml; // 新增页面
-
-    // 2. 执行 mathjax 渲染
-    MathJax.typeset();
-    </script>
-
-</body>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1> 我的发现：</h1><br>
+    <h2> 数学：</h2><br>
+    <h3> 几何\-\(geometric)</h3><br>
+    <h4> First：</h4><br>
+    <p><img src="\geofp.png" alt="geofp" /></p>
+    <p><img src="\geofm.png" alt="geofm" /></p>
+  </body>
 </html>
