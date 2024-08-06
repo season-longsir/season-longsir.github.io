@@ -160,3 +160,5 @@ MLE：Memory Limit Exceeded，超出内存限制。
 OLE：Output Limit Exceeded，输出超过限制。
 UKE：Unknown Error，出现未知错误。
 ```
+
+![洛谷中的一些错误](someerr.png)
