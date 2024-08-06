@@ -92,3 +92,5 @@ namespace HelloWorld
 ![费华](wasteSaying.png)
 
 ~~由此，费华函数、费华定理与费华二定理统称费华，又称废话，因为他的结论都是包含在条件中的（doge）~~
+
+#### 更多 ~~奇怪~~ 发现请参考：[我的发现](/myself/findings/home.html)
