@@ -12,6 +12,7 @@
 
 - [前往洛谷](https://www.luogu.com.cn/user/1107983#main)
 
+- [前往自创ChatGPT](https://season-longsir.github.io/chat.html)
 
 # 洛谷：
 
