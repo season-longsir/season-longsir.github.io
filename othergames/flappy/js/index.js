@@ -472,7 +472,7 @@ function stageTooSmallHandler(){
         //game over logo
         context.drawImage(gameOverCanvas, bounds.getCenterX() - logoCanvas.width/2, canvas.height *.2);
 
-        var instruction = "Click or tap to flap again.";
+        var instruction = "点击屏幕开始游戏";
         context.font = "bold normal 24px sans-serif";
         context.fillStyle = "#FFFFFF";
         context.fillText(instruction, bounds.getCenterX() - context.measureText(instruction).width/2, canvas.height *.25 + gameOverCanvas.height);
@@ -490,7 +490,7 @@ function stageTooSmallHandler(){
     }
 
     function renderInstructions(){
-        var instruction = "Click or tap to flap :)";
+        var instruction = "点击屏幕开始游戏";
         context.font = "bold normal 24px sans-serif";
         context.fillStyle = "#FFFFFF";
         context.fillText(instruction, bounds.getCenterX() - context.measureText(instruction).width/2, canvas.height *.2);
