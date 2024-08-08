@@ -14,6 +14,8 @@
 
 - [前往自创ChatGPT](https://season-longsir.github.io/chat.html)
 
+- [前往小小贪吃蛇](https://season-longsir.github.io/snake.html)
+
 # 洛谷：
 
 # 我叫季节
