@@ -16,6 +16,8 @@
 
 - [前往小小贪吃蛇](https://season-longsir.github.io/snake.html)
 
+- [前往其他自创游戏中心](https://season-longsir.github.io/othergames/home.html)
+
 # 洛谷：
 
 # 我叫季节
