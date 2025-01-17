@@ -3,8 +3,11 @@
     <head>
         <title>雅志九班</title>
         <meta charset="utf-8">
-        <link rel="shortcut icon" href="/yazhi.ico?">
+        <link rel="shortcut icon" href="/yazhi2.ico?">
         <style>
+            body {
+                background-color: #F5F5DC;
+            }
             h1.head
             {
                 text-align: center;
@@ -98,6 +101,60 @@
                 background-color: darkgrey;
                 border-radius: 25px;
                 color: #fff;
+            }
+            .box  {
+                margin: auto;
+                width: 1000px;
+                height: 600px;
+                position: relative;
+            }
+            .box img {
+                border: 1px solid white;
+                padding: 10px;
+                width: 300px;
+                box-shadow: 1px 1px 5px #666;
+                border-radius: 10px;
+                transition: all 1s;
+            }
+            .box img:hover {
+                transform: scale(1.5,1.5);
+                z-index: 1;
+            }
+            .img1 {
+                position: absolute;
+                top: 181px;
+                left: 300px;
+                transform: rotate(45deg);
+            }
+            .img2 {
+                position: absolute;
+                top: 248px;
+                left: 142px;
+                transform: rotate(-25deg);
+            }
+            .img3 {
+                position: absolute;
+                top: 97px;
+                left: 472px;
+                transform: rotate(15deg);
+            }
+            .img4 {
+                position: absolute;
+                top: 280px;
+                left: 531px;
+                transform: rotate(-65deg);
+            }
+            .img5 {
+                position: absolute;
+                top: 133px;
+                left: 93px;
+                transform: rotate(40deg);
+            }
+            .img6 {
+                position: absolute;
+                top: 393px;
+                left: 318px;
+                transform: rotate(-30deg);
             }
         </style>
         <script>
@@ -269,7 +326,7 @@ V1.7增加文本，添加模块“金榜题名”`
             }
             function gengxinshijian_Click() {
                 alert(
-                    `上一次完成编辑：2023.11.3/21：00`
+                    `上一次完成编辑：2025.1.17`
                 );
             }
             function wrong_Click() {
@@ -282,6 +339,18 @@ V1.7增加文本，添加模块“金榜题名”`
                     `恭喜你答对啦`
                 );
             }
+            function chemistry_Click() {
+                alert(
+                    `“飞天乐园”创始人之一，辅仁学校唯一博士在读的老师，化学鲁教版最新的封面就是她设置的！
+雪碧忠实爱好者，最爱的化学式就是H2CO3！（也因为喝雪碧喝多了导致肋骨断了……）`
+                );
+            }
+            function zhangshuyan_Click(){
+                alert(
+                    `现任班长，OUO创始人
+爱笑，笑声永远是最大的……`
+                );
+            }
         </script>
     </head>
     <header>
@@ -290,6 +359,17 @@ V1.7增加文本，添加模块“金榜题名”`
     <body>
         <div class="yazhi">
             <img src="furenyazhi.png" alt="雅志九班班徽" id="yazhi">
+        </div>
+        <div class="box">
+            <img src="11.jpeg" class="img1">
+            <img src="22.jpeg" class="img2">
+            <img src="33.jpeg" class="img3">
+            <img src="44.jpeg" class="img4">
+            <img src="55.png" class="img5">
+            <img src="66.jpeg" class="img6">
+        </div>
+        <div>
+            <br><br><br><br><br><br>
         </div>
         <div id="mainText" style="background-color: dimgray;border-radius: 25px;">
             <h2>
@@ -384,6 +464,12 @@ V1.7增加文本，添加模块“金榜题名”`
                             <input type = "button" onclick = "wuli_Click()" value = "点击查看" ></input>
                         </td>
                     </tr>
+                    <tr>
+                        <td>化学</td>
+                        <td>杨老师(杨乐)
+                            <input type = "button" onclick = "chemistry_Click()" value = "点击查看" ></input>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div class="yazhi">
@@ -466,7 +552,7 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>16</td>
-                        <td>李想</td>
+                        <td>李想#</td>
                     </tr>
                     <tr>
                         <td>17</td>
@@ -546,7 +632,8 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>36</td>
-                        <td>张淑彦</td>
+                        <td>张淑彦
+                            <input type = "button" onclick = "zhangshuyan_Click()" value = "点击查看" ></td>
                     </tr>
                     <tr>
                         <td>37</td>
@@ -558,7 +645,7 @@ V1.7增加文本，添加模块“金榜题名”`
                     </tr>
                     <tr>
                         <td>39</td>
-                        <td>张梓婷</td>
+                        <td>张梓婷$</td>
                     </tr>
                     <tr>
                         <td>40</td>
@@ -580,9 +667,11 @@ V1.7增加文本，添加模块“金榜题名”`
             </div>
             <h3 style="text-align: center;">
                 注:有些老师名空着是因为忘了叫啥名……<br>
-                学生姓名后面带星号(*)的是转学走的……<br>
+                学生姓名后面带星号(*)的是七上(2022秋季)转学走的……<br>
                 学生姓名后面带上标符号(^)的是七下(2023春季)转学来的……<br>
                 学生姓名后面带按位与符号(&)的是八上(2023秋季)转学来的……<br>
+                学生姓名后面带有美元符号($)的是八下(2024春季)转学走的……<br>
+                学生姓名后面带有井号(#)的是九上(2024秋季)转学走的……<br>
                 给体育老师道个歉，之前把名字写错了……现在改过来了……
             </h3>
         </div>
@@ -596,6 +685,16 @@ V1.7增加文本，添加模块“金榜题名”`
                 <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
                 <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by曙猫書(原作者不想透露其姓名)</a><br>
                 <del>敬请期待由何沛颖同学带来的小说《雅志王国》</del><br>
+                <iframe
+                      width="600px"
+                      height="400px"
+                      src="https://www.ccw.site/embed?id=6685134187cad23827d9b892&type=player"
+                      title="Dragat-0与1 - NortH - 共创世界(ccw.site) - Scratch、游戏、动画、漫画、小说、编程创作社区"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      scrolling="no"
+                ></iframe><br>
                 <br>
             </h3>
         </div>
@@ -606,9 +705,10 @@ V1.7增加文本，添加模块“金榜题名”`
             <br>
             <h3 style="text-align: center;">
                 当每次考试完成后，将会把某些人的排名放进来哦！<br>
-                恭喜<big>班长·刘轩闻</big>、<big>纪律委员·李润桐</big>、<big>生活委员·季节</big>荣获2023学年初一下学期<big>优秀班干部</big>称号！<br>
+                <!-- 恭喜<big>班长·刘轩闻</big>、<big>纪律委员·李润桐</big>、<big>生活委员·季节</big>荣获2023学年初一下学期<big>优秀班干部</big>称号！<br>
                 恭喜<big>刘轩闻</big>、<big>李润桐</big>、<big>季节</big>等十人荣获2023学年初一下学期<big>特长生</big>称号！<br>
-                <small>注：特长生我真的忘了有哪几个人了……sorry~</small><br>
+                <small>注：特长生我真的忘了有哪几个人了……sorry~</small><br> -->
+                暂无。
                 <br>
             </h3>
         </div>
@@ -639,14 +739,14 @@ V1.7增加文本，添加模块“金榜题名”`
                 &emsp;&emsp;2.下列选项中，学号大于20的是：&emsp;
                 A：季节<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
                 B：刘轩闻<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
-                C：刘金轩<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                C：马昕源<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
                 D：李想<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
                 <br>
-                &emsp;&emsp;3.下列选项中，学习最差的是：&emsp;
-                A：李润桐<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
+                &emsp;&emsp;3.下列选项中，拿全科、主科第一最多的是：&emsp;
+                A：李润桐<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
                 B：常峻源<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
                 C：杨子宸<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
-                D：刘恩琪<input type = "button" onclick = "true_Click()" value = "选这个！" ></input>
+                D：刘恩琪<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
                 <br>
                 &emsp;&emsp;4.下列选项中，不是数学老师的是：&emsp;
                 A：李晓老师<input type = "button" onclick = "wrong_Click()" value = "选这个！" ></input>
@@ -662,6 +762,7 @@ V1.7增加文本，添加模块“金榜题名”`
             </h3>
             <br>
         </div>
+        <br><br>
         <div id="footer">
             开发团：NortH&copy;<br>
             QQ：3389786744<br>
