@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html leng="en">
+<html leng="zh-CN">
     <head>
         <title>雅志九班</title>
-        <meta charset="utf-8">
-        <link rel="shortcut icon" href="/yazhi2.ico?">
+        <meta charset="UTF-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <link rel="shortcut icon" href="/yazhi2.ico">
         <style>
             body {
                 background-color: #F5F5DC;
@@ -156,7 +157,98 @@
                 left: 318px;
                 transform: rotate(-30deg);
             }
+            /* 整体容器样式 */
+            .exam-cheer-container {
+                position: relative;
+                width: 400px;
+                height: 300px;
+                margin: 0 auto;
+                perspective: 1000px;
+            }
+
+            /* 卡片样式 */
+            .exam-cheer-card {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+                transition: transform 0.5s;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                background-color: #fff;
+            }
+
+            /* 卡片向左翻转样式 */
+            .exam-cheer-card.flip-left {
+                transform: rotateY(180deg);
+            }
+
+            /* 卡片向右翻转样式 */
+            .exam-cheer-card.flip-right {
+                transform: rotateY(-180deg);
+            }
+
+            /* 卡片正面样式 */
+            .exam-cheer-front,
+            .exam-cheer-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+            }
+
+            /* 卡片正面背景颜色 */
+            .exam-cheer-front {
+                background-color: #ff6b6b;
+                color: white;
+                font-size: 36px;
+            }
+
+            /* 卡片背面背景颜色 */
+            .exam-cheer-back {
+                background-color: #f4f4f9;
+                color: #333;
+                font-size: 24px;
+                transform: rotateY(180deg);
+            }
+            /* 按钮容器样式 */
+            .button-container {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 100;
+                display: flex; /* 使用 Flexbox 布局让按钮横向排列 */
+                gap: 10px; /* 设置按钮之间的间距 */
+            }
+
+            /* 按钮样式 */
+            button {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
         </style>
+        <script>
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({
+                        behavior: 'smooth' // 平滑滚动效果
+                    });
+                }
+            }
+        </script>
         <script>
             alert("欢迎来到雅志九班！");
             alert("请不要只看成员列表，又更新了“作品墙”和“金榜题名”等多个模块哦！记得往下看！");
@@ -260,7 +352,8 @@ V1.5添加部分同学的个人介绍
 V1.6添加模块“作品墙”
 V1.7增加文本，添加模块“金榜题名”
 V1.8添加模块“OUO”“问答”
-V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介绍`
+V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介绍
+V2.0添加模块“中考加油！”、目录，修改、添加部分同学的个人介绍`
                 );
             }
             function kaifazhe_Click() {
@@ -278,9 +371,8 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
             }
             function chenzhengrun_Click() {
                 alert(
-                    `挺调皮的一个同学，小学时是七班的。
-他喜欢打篮球。
-他上课的时候喜欢斜着坐，跟后位聊天。`
+                    `挺调皮可爱的一个同学，小学时是七班的。
+他喜欢打篮球。`
                 );
             }
             function chengxihao_Click() {
@@ -292,8 +384,8 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
             }
             function cuijunxi_Click() {
                 alert(
-                    `说实话有点烦……
-历史课代表`
+                    `非常热心的小伙子！
+成为了一堆课代表`
                 );
             }
             function daixingye_Click() {
@@ -328,7 +420,7 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
             }
             function gengxinshijian_Click() {
                 alert(
-                    `上一次完成编辑：2025.1.17`
+                    `上一次完成编辑：2025.1.30`
                 );
             }
             function wrong_Click() {
@@ -353,9 +445,28 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
 爱笑，笑声永远是最大的……`
                 );
             }
+            function hanqiwei_Click(){
+                alert(
+                    `物理课代表
+挺实在一小伙:)`
+                )
+            }
         </script>
     </head>
     <header>
+        <div id="top">
+        </div>
+        <!-- 按钮容器 -->
+        <div class="button-container">
+            <button onclick="scrollToSection('top')">前往顶端</button>
+            <button onclick="scrollToSection('mainText')">前往名单</button>
+            <button onclick="scrollToSection('zpq')">前往作品墙</button>
+            <button onclick="scrollToSection('jbtm')">前往金榜题名</button>
+            <button onclick="scrollToSection('ouo')">前往OUO</button>
+            <button onclick="scrollToSection('wenda')">前往问答</button>
+            <button onclick="scrollToSection('footer')">前往尾页</button>
+        </div>
+        <br><br>
         <h1 class="head">欢迎来到雅志九班！</h1>
     </header>
     <body>
@@ -370,6 +481,54 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
             <img src="55.png" class="img5">
             <img src="66.jpeg" class="img6">
         </div>
+        <div>
+            <br><br><br><br><br><br>
+        </div>
+        <!-- 中考加油容器 -->
+        <div class="exam-cheer-container">
+            <div class="exam-cheer-card">
+                <div class="exam-cheer-front">中考加油！</div>
+                <div class="exam-cheer-back">祝你们超常发挥，金榜题名！</div>
+            </div>
+        </div>
+
+        <script>
+            // 加油祝福语数组
+            const messages = [
+                "祝你们超常发挥，金榜题名！",
+                "付出终有回报，中考定能成功！",
+                "放松心态，迎接挑战，中考必胜！",
+                "相信自己，你们是最棒的，中考加油！"
+            ];
+
+            let currentIndex = 0;
+            const card = document.querySelector('.exam-cheer-card');
+            const back = document.querySelector('.exam-cheer-back');
+            const container = document.querySelector('.exam-cheer-container');
+
+            // 随机生成翻转方向
+            function getRandomFlipDirection() {
+                return Math.random() > 0.5 ? 'flip-left' : 'flip-right';
+            }
+
+            // 当鼠标移入时更新祝福语并随机翻转
+            container.addEventListener('mouseenter', function () {
+                // 移除之前的翻转类
+                card.classList.remove('flip-left', 'flip-right');
+                // 获取随机翻转方向
+                const flipDirection = getRandomFlipDirection();
+                // 添加随机翻转类
+                card.classList.add(flipDirection);
+                // 更新祝福语
+                currentIndex = (currentIndex + 1) % messages.length;
+                back.textContent = messages[currentIndex];
+            });
+
+            // 当鼠标移出时移除翻转效果
+            container.addEventListener('mouseleave', function () {
+                card.classList.remove('flip-left', 'flip-right');
+            });
+        </script>
         <div>
             <br><br><br><br><br><br>
         </div>
@@ -512,7 +671,9 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
                     </tr>
                     <tr>
                         <td>6</td>
-                        <td>韩其威</td>
+                        <td>韩其威
+                            <input type = "button" onclick = "hanqiwei_Click()" value = "点击查看" ></input>
+                        </td>
                     </tr>
                     <tr>
                         <td>7</td>
@@ -684,9 +845,11 @@ V1.9添加模块“照片墙”，更新老师，添加部分同学的个人介�
             <br>
             <h3 style="text-align: center;">
                 有些被我选中的作品会放在这里哦！<br>
+                <!--
                 <a href="https://season-longsir.github.io/chunyijiangnan.html">七年级下.音乐项目式作业.春意江南：by季节，胡馨月，李想</a><br>
                 <a href="https://fanqienovel.com/page/7254018504209206324">科幻小说《白墓》：by曙猫書(原作者不想透露其姓名)</a><br>
                 <del>敬请期待由何沛颖同学带来的小说《雅志王国》</del><br>
+                -->
                 <iframe
                       width="600px"
                       height="400px"
