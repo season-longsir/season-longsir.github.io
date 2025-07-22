@@ -238,6 +238,10 @@
             button:hover {
                 background-color: #0056b3;
             }
+
+            audio {
+                display: none;
+            }
         </style>
         <script>
             function scrollToSection(sectionId) {
@@ -453,11 +457,26 @@ V2.0添加模块“中考加油！”、目录，修改、添加部分同学的�
 挺实在一小伙:)`
                 )
             }
+
+
+            function dt(){
+                var dd = document.getElementById("dd")
+                dd.pause()
+            }
+            function st(){
+                var dd = document.getElementById("dd")
+                dd.play()
+            }
+            function rs(){
+                var dd = document.getElementById("dd")
+                dd.load()
+            }
         </script>
     </head>
     <header>
         <div id="top">
         </div>
+        <audio src="yazhi.mp3" id="dd" autoplay="autoplay" controls="controls" loop="loop"></audio>
         <!-- 按钮容器 -->
         <div class="button-container">
             <button onclick="scrollToSection('top')">前往顶端</button>
@@ -467,6 +486,9 @@ V2.0添加模块“中考加油！”、目录，修改、添加部分同学的�
             <button onclick="scrollToSection('ouo')">前往OUO</button>
             <button onclick="scrollToSection('wenda')">前往问答</button>
             <button onclick="scrollToSection('footer')">前往尾页</button>
+            <button onclick="dt()">停止播放</button>
+            <button onclick="st()">开始播放</button>
+            <button onclick="rs()">重置播放</button>
         </div>
         <br><br>
         <h1 class="head">欢迎下次再来雅志九班……</h1>
