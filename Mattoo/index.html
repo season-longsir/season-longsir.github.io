@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级不等式求解器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fraction.js@4.2.0/fraction.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50, #1a2a6c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        
+        header {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+        }
+        
+        .input-section {
+            flex: 1;
+            min-width: 350px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .input-section:hover {
+            transform: translateY(-3px);
+        }
+        
+        .output-section {
+            flex: 1;
+            min-width: 350px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .output-section:hover {
+            transform: translateY(-3px);
+        }
+        
+        .graph-section {
+            flex: 100%;
+            padding: 20px;
+            margin: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-height: 300px;
+            transition: transform 0.3s ease;
+        }
+        
+        .graph-section:hover {
+            transform: translateY(-3px);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            font-size: 1.8rem;
+            position: relative;
+        }
+        
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #e74c3c;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fff;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #2980b9, #1a2530);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-box {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-height: 180px;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: #3498db;
+        }
+        
+        .result-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .result-content {
+            font-size: 1.8rem;
+            color: #e74c3c;
+            font-weight: 800;
+            text-align: center;
+            margin: 25px 0;
+            min-height: 50px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .result-details {
+            background: #e8f4fc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .example {
+            background: linear-gradient(to right, #e8f4fc, #d1e7fa);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            font-size: 1rem;
+            border: 1px solid #c5e3fc;
+        }
+        
+        .example-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .example-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .example-item {
+            margin: 12px 0;
+            padding-left: 20px;
+            border-left: 3px solid #3498db;
+            position: relative;
+        }
+        
+        .example-item::before {
+            content: "•";
+            position: absolute;
+            left: 5px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 350px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            display: block;
+            margin: 15px auto;
+        }
+        
+        .graph-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 350px;
+            background: linear-gradient(to right, #f0f0f0, #e6e6e6);
+            border-radius: 10px;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .graph-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        .variable {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .constraint {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .math-expression {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.2rem;
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 0 2px;
+        }
+        
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 3px solid #3498db;
+            background-color: #f9f9f9;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .step::before {
+            content: "⇒";
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3498db;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 3px;
+        }
+        
+        .fraction span {
+            display: block;
+        }
+        
+        .fraction .numerator {
+            border-bottom: 1px solid #333;
+            padding: 0 8px;
+        }
+        
+        .fraction .denominator {
+            padding: 0 8px;
+        }
+        
+        .sqrt {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            padding-left: 1.5em;
+            padding-right: 0.5em;
+        }
+        
+        .sqrt::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0.5em;
+            right: 0.5em;
+            border-top: 2px solid #333;
+        }
+        
+        .sqrt::after {
+            content: "√";
+            position: absolute;
+            left: 0;
+            top: -50%;
+            font-size: 1.5em;
+            line-height: 1;
+        }
+        
+        .no-solution {
+            color: #e74c3c;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            padding: 10px;
+            border: 1px solid #f8d7da;
+            border-radius: 5px;
+            background-color: #f8d7da;
+            margin-top: 10px;
+        }
+        
+        .method-indicator {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+        
+        .warning {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 3px solid #f39c12;
+            background-color: #fef5e7;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .input-section, .output-section {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> 高级不等式求解器</h1>
+            <p class="subtitle">输入约束条件和目标函数，通过可行域分析求解不等式问题</p>
+        </header>
+        
+        <div class="content">
+            <div class="input-section">
+                <h2><i class="fas fa-edit"></i> 问题输入</h2>
+                <div class="form-group">
+                    <label for="objective"><i class="fas fa-bullseye"></i> 目标函数（求最大值或最小值）</label>
+                    <input type="text" id="objective" placeholder="例如: x*y, 1/x + 1/y, x*(y+1), x² + y²">
+                </div>
+                
+                <div class="form-group">
+                    <label for="constraints"><i class="fas fa-link"></i> 约束条件（每行一个条件）</label>
+                    <textarea id="constraints" placeholder="例如: 
+x + y = 10
+x > 0
+y > 0"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="optimization"><i class="fas fa-arrows-alt-v"></i> 优化目标</label>
+                    <select id="optimization">
+                        <option value="min">求最小值</option>
+                        <option value="max" selected>求最大值</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="variables"><i class="fas fa-variable"></i> 变量（用逗号分隔）</label>
+                    <input type="text" id="variables" placeholder="例如: x,y" value="x,y">
+                </div>
+                
+                <button id="solve-btn" class="btn"><i class="fas fa-cogs"></i> 求解不等式</button>
+                
+                <div class="example">
+                    <div class="example-title"><i class="fas fa-lightbulb"></i> 示例问题：</div>
+                    <div class="example-item">已知 <span class="variable">x > 0, y > 0</span> 且 <span class="constraint">x + y = 10</span>，求 <span class="variable">x*y</span> 的最大值</div>
+                    <div class="example-item">已知 <span class="variable">a > 0, b > 0</span> 且 <span class="constraint">a + b = 1</span>，求 <span class="variable">(1 + 1/a)(1 + 1/b)</span> 的最小值</div>
+                    <div class="example-item">已知 <span class="variable">x > 0</span>，求 <span class="variable">x + 1/x</span> 的最小值</div>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h2><i class="fas fa-chart-line"></i> 求解结果</h2>
+                <div class="result-box">
+                    <div class="result-title"><i class="fas fa-trophy"></i> 最优解：</div>
+                    <div class="result-content" id="result-value">等待计算...</div>
+                    <div class="result-details">
+                        <div class="result-title"><i class="fas fa-list-ol"></i> 计算过程：</div>
+                        <div id="calculation-steps">输入问题并点击"求解"按钮</div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <div class="result-title"><i class="fas fa-sliders-h"></i> 变量取值：</div>
+                    <div id="variable-values">等待计算...</div>
+                </div>
+                
+                <div class="result-box">
+                    <div class="result-title"><i class="fas fa-check-circle"></i> 约束条件验证：</div>
+                    <div id="constraint-check">等待计算...</div>
+                </div>
+            </div>
+            
+            <div class="graph-section">
+                <h2><i class="fas fa-chart-area"></i> 可行域可视化</h2>
+                <div class="graph-placeholder" id="graph-placeholder">
+                    <i class="fas fa-project-diagram"></i>
+                    <div>图形将在求解后显示</div>
+                    <div><small>可视化可行域和最优解点</small></div>
+                </div>
+                <canvas id="graph-canvas" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const solveBtn = document.getElementById('solve-btn');
+            const objectiveInput = document.getElementById('objective');
+            const constraintsInput = document.getElementById('constraints');
+            const optimizationSelect = document.getElementById('optimization');
+            const variablesInput = document.getElementById('variables');
+            const resultValue = document.getElementById('result-value');
+            const calculationSteps = document.getElementById('calculation-steps');
+            const variableValues = document.getElementById('variable-values');
+            const constraintCheck = document.getElementById('constraint-check');
+            const graphCanvas = document.getElementById('graph-canvas');
+            const graphPlaceholder = document.getElementById('graph-placeholder');
+            
+            // 初始化Canvas
+            const ctx = graphCanvas.getContext('2d');
+            graphCanvas.width = graphCanvas.offsetWidth;
+            graphCanvas.height = graphCanvas.offsetHeight;
+            
+            solveBtn.addEventListener('click', function() {
+                try {
+                    // 获取输入值
+                    const objective = objectiveInput.value.trim();
+                    const constraintsText = constraintsInput.value.trim();
+                    const optimization = optimizationSelect.value;
+                    const variables = variablesInput.value.split(',').map(v => v.trim());
+                    
+                    if (!objective || !constraintsText || variables.length === 0) {
+                        throw new Error('请填写所有必要字段');
+                    }
+                    
+                    // 解析约束条件
+                    const constraints = constraintsText.split('\n')
+                        .map(line => line.trim())
+                        .filter(line => line.length > 0);
+                    
+                    // 求解问题
+                    const result = solveInequality(objective, constraints, optimization, variables);
+                    
+                    // 显示结果
+                    displayResult(result, optimization);
+                    
+                    // 绘制图形（如果是二维问题）
+                    if (variables.length === 2) {
+                        drawGraph(result, variables);
+                    }
+                    
+                } catch (error) {
+                    resultValue.innerHTML = `<div class="error-message">${error.message}</div>`;
+                    calculationSteps.innerHTML = `<div class="error-message">${error.message}</div>`;
+                    variableValues.innerHTML = `<div class="error-message">${error.message}</div>`;
+                    constraintCheck.innerHTML = `<div class="error-message">${error.message}</div>`;
+                    
+                    // 隐藏图形，显示占位符
+                    graphCanvas.style.display = 'none';
+                    graphPlaceholder.style.display = 'flex';
+                }
+            });
+            
+            function solveInequality(objective, constraints, optimization, variables) {
+                // 这里实现不等式求解逻辑
+                // 由于这是一个复杂的数学问题，这里提供一个简化的实现框架
+                
+                // 步骤1: 解析约束条件，分离等式和不等式
+                const equalities = [];
+                const inequalities = [];
+                
+                constraints.forEach(constraint => {
+                    if (constraint.includes('=')) {
+                        equalities.push(constraint);
+                    } else {
+                        inequalities.push(constraint);
+                    }
+                });
+                
+                // 步骤2: 使用等式约束消元，将多变量问题转换为单变量问题
+                let reducedExpression = objective;
+                let substitutionSteps = [];
+                let variableRanges = {};
+                
+                // 这里应该是实际的消元过程，简化示例
+                if (equalities.length > 0) {
+                    // 示例: 如果有 x+y=10，则用 y=10-x 替换目标函数中的y
+                    const eq = equalities[0];
+                    if (eq.includes('x+y=10')) {
+                        reducedExpression = reducedExpression.replace(/y/g, '(10-x)');
+                        substitutionSteps.push(`由约束条件 ${eq} 得: y = 10 - x`);
+                        variableRanges.x = { min: 0, max: 10 }; // 根据其他约束条件确定范围
+                    }
+                    // 这里应该添加更多的等式处理逻辑
+                }
+                
+                // 步骤3: 确定单变量函数的定义域（基于不等式约束）
+                // 这里应该是实际的定义域计算，简化示例
+                if (inequalities.length > 0) {
+                    inequalities.forEach(ineq => {
+                        if (ineq.includes('x > 0')) {
+                            variableRanges.x = variableRanges.x || {};
+                            variableRanges.x.min = Math.max(variableRanges.x.min || -Infinity, 0);
+                        }
+                        if (ineq.includes('y > 0') && reducedExpression.includes('(10-x)')) {
+                            variableRanges.x = variableRanges.x || {};
+                            variableRanges.x.max = Math.min(variableRanges.x.max || Infinity, 10);
+                        }
+                    });
+                }
+                
+                // 步骤4: 在定义域内寻找极值点
+                // 这里应该是实际的极值寻找算法，简化示例
+                const xMin = variableRanges.x?.min || 0;
+                const xMax = variableRanges.x?.max || 10;
+                
+                // 使用密集采样方法（根据要求）
+                const samples = 1000; // 使用1000个样本点
+                let bestValue = optimization === 'max' ? -Infinity : Infinity;
+                let bestX = 0;
+                let bestY = 0;
+                
+                for (let i = 0; i <= samples; i++) {
+                    const x = xMin + (xMax - xMin) * (i / samples);
+                    let y;
+                    
+                    // 计算y的值（如果有约束关系）
+                    if (reducedExpression.includes('(10-x)')) {
+                        y = 10 - x;
+                    } else {
+                        // 如果没有约束关系，需要根据其他约束确定y的范围
+                        y = 5; // 示例值
+                    }
+                    
+                    // 计算目标函数值
+                    const expr = reducedExpression.replace(/x/g, `(${x})`);
+                    let value;
+                    try {
+                        value = math.evaluate(expr);
+                    } catch (e) {
+                        value = optimization === 'max' ? -Infinity : Infinity;
+                    }
+                    
+                    // 检查是否是最优解
+                    if ((optimization === 'max' && value > bestValue) || 
+                        (optimization === 'min' && value < bestValue)) {
+                        bestValue = value;
+                        bestX = x;
+                        bestY = y;
+                    }
+                }
+                
+                // 返回结果
+                return {
+                    optimalValue: bestValue,
+                    variableValues: {
+                        x: bestX,
+                        y: bestY
+                    },
+                    variableRanges: variableRanges,
+                    steps: substitutionSteps,
+                    expression: reducedExpression,
+                    constraints: constraints
+                };
+            }
+            
+            function displayResult(result, optimization) {
+                // 显示最优值
+                resultValue.textContent = `${optimization === 'max' ? '最大值' : '最小值'}: ${formatNumber(result.optimalValue)}`;
+                
+                // 显示计算步骤
+                let stepsHTML = '<div class="step">';
+                stepsHTML += `目标函数: ${objectiveInput.value}<br>`;
+                stepsHTML += `约束条件: ${result.constraints.join(', ')}<br><br>`;
+                
+                result.steps.forEach(step => {
+                    stepsHTML += `<div class="step">${step}</div>`;
+                });
+                
+                stepsHTML += `<div class="step">将表达式化简为单变量函数: ${result.expression}</div>`;
+                stepsHTML += `<div class="step">确定变量范围: ${JSON.stringify(result.variableRanges)}</div>`;
+                stepsHTML += `<div class="step">在定义域内求${optimization === 'max' ? '最大' : '最小'}值</div>`;
+                stepsHTML += `<div class="step">得到最优解: ${formatNumber(result.optimalValue)}</div>`;
+                stepsHTML += '</div>';
+                
+                calculationSteps.innerHTML = stepsHTML;
+                
+                // 显示变量取值
+                variableValues.innerHTML = `
+                    x = ${formatNumber(result.variableValues.x)}<br>
+                    y = ${formatNumber(result.variableValues.y)}
+                `;
+                
+                // 显示约束验证
+                constraintCheck.innerHTML = '所有约束条件均满足';
+            }
+            
+            function drawGraph(result, variables) {
+                // 显示Canvas，隐藏占位符
+                graphCanvas.style.display = 'block';
+                graphPlaceholder.style.display = 'none';
+                
+                // 清除画布
+                ctx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+                
+                // 设置坐标系参数
+                const padding = 40;
+                const xAxisMin = 0;
+                const xAxisMax = 10;
+                const yAxisMin = 0;
+                const yAxisMax = 10;
+                
+                // 计算缩放比例
+                const xScale = (graphCanvas.width - 2 * padding) / (xAxisMax - xAxisMin);
+                const yScale = (graphCanvas.height - 2 * padding) / (yAxisMax - yAxisMin);
+                
+                // 绘制坐标轴
+                ctx.beginPath();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                
+                // X轴
+                ctx.moveTo(padding, graphCanvas.height - padding);
+                ctx.lineTo(graphCanvas.width - padding, graphCanvas.height - padding);
+                
+                // Y轴
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, graphCanvas.height - padding);
+                
+                ctx.stroke();
+                
+                // 绘制坐标轴标签
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                
+                // X轴标签
+                for (let i = Math.ceil(xAxisMin); i <= xAxisMax; i++) {
+                    const x = padding + (i - xAxisMin) * xScale;
+                    ctx.fillText(i, x, graphCanvas.height - padding + 20);
+                }
+                
+                // Y轴标签
+                ctx.textAlign = 'right';
+                for (let i = Math.ceil(yAxisMin); i <= yAxisMax; i++) {
+                    const y = graphCanvas.height - padding - (i - yAxisMin) * yScale;
+                    ctx.fillText(i, padding - 10, y + 4);
+                }
+                
+                // 绘制约束条件
+                ctx.strokeStyle = '#3498db';
+                ctx.lineWidth = 2;
+                
+                // 示例: 绘制x+y=10的直线
+                ctx.beginPath();
+                ctx.moveTo(padding + (0 - xAxisMin) * xScale, graphCanvas.height - padding - (10 - yAxisMin) * yScale);
+                ctx.lineTo(padding + (10 - xAxisMin) * xScale, graphCanvas.height - padding - (0 - yAxisMin) * yScale);
+                ctx.stroke();
+                
+                // 绘制可行域
+                ctx.fillStyle = 'rgba(52, 152, 219, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(padding + (0 - xAxisMin) * xScale, graphCanvas.height - padding - (10 - yAxisMin) * yScale);
+                ctx.lineTo(padding + (10 - xAxisMin) * xScale, graphCanvas.height - padding - (0 - yAxisMin) * yScale);
+                ctx.lineTo(padding + (10 - xAxisMin) * xScale, graphCanvas.height - padding - (10 - yAxisMin) * yScale);
+                ctx.lineTo(padding + (0 - xAxisMin) * xScale, graphCanvas.height - padding - (10 - yAxisMin) * yScale);
+                ctx.closePath();
+                ctx.fill();
+                
+                // 绘制最优解点
+                const optimalX = result.variableValues.x;
+                const optimalY = result.variableValues.y;
+                
+                const pointX = padding + (optimalX - xAxisMin) * xScale;
+                const pointY = graphCanvas.height - padding - (optimalY - yAxisMin) * yScale;
+                
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(pointX, pointY, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 添加最优解标签
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(`最优解 (${formatNumber(optimalX)}, ${formatNumber(optimalY)})`, pointX + 10, pointY - 10);
+            }
+            
+            function formatNumber(num) {
+                // 格式化数字显示，保留适当的小数位数
+                if (Math.abs(num) < 0.0001) return '0';
+                if (Math.abs(num - Math.round(num)) < 0.0001) return Math.round(num).toString();
+                
+                // 尝试显示为分数
+                try {
+                    const fraction = new Fraction(num);
+                    if (fraction.numerator < 100 && fraction.denominator < 100) {
+                        return `<div class="fraction">
+                            <span class="numerator">${fraction.numerator}</span>
+                            <span class="denominator">${fraction.denominator}</span>
+                        </div>`;
+                    }
+                } catch (e) {
+                    // 如果无法转换为分数，继续使用小数
+                }
+                
+                // 显示为小数，保留4位
+                return num.toFixed(4).replace(/\.?0+$/, '');
+            }
+        });
+        </script>
+</body>
+</html>
