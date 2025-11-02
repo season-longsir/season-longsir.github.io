@@ -208,6 +208,9 @@
         .result-container {
             text-align: center;
             padding: 30px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
         }
         
         .result-title {
@@ -217,7 +220,7 @@
         }
         
         .result-display {
-            min-height: 200px;
+            flex: 1;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -297,23 +300,37 @@
                 <h2>抽取设置</h2>
                 <div class="control-group">
                     <label for="cnt">抽取人数</label>
-                    <input type="number" id="cnt" min="1" max="29" value="1">
+                    <input type="number" id="cnt" min="1" max="10" value="1">
                 </div>
                 
                 <div class="control-group">
                     <h3>抽取名单</h3>
                     <p>点击下方（右方）学生卡片可将其加入/移出抽取名单</p>
+
+                </div>
+
+                <div class="small-button-group">
+                    <button id="selAll" class="success-btn small-button">全选</button>
+                    <button id="selNone" class="warning-btn small-button">全不选</button>
                 </div>
                 
-                <div class="small-button-group">
-                    <button id="selNone" class="success-btn small-button">全选</button>
-                    <button id="selAll" class="warning-btn small-button">全不选</button>
-                </div>
                 <div class="button-group">
                     <button id="drawBtn" class="primary-btn">开始抽取</button>
                     <button id="resetBtn" class="secondary-btn">重置抽取名单</button>
                 </div>
-
+            </div>
+            
+            <div class="panel result-container">
+                <h2 class="result-title">抽取结果</h2>
+                <div class="result-display" id="resDisplay">
+                    <p>点击"开始抽取"按钮显示结果</p>
+                </div>
+                
+                <div class="history">
+                    <h3 class="history-title">抽取历史</h3>
+                    <ul class="history-list" id="hisList">
+                    </ul>
+                </div>
             </div>
             
             <div class="panel students-container">
@@ -323,32 +340,42 @@
             </div>
         </div>
         
-        <div class="panel result-container">
-            <h2 class="result-title">抽取结果</h2>
-            <div class="result-display" id="resDisplay">
-                <p>点击"开始抽取"按钮显示结果</p>
-            </div>
-            
-            <div class="history">
-                <h3 class="history-title">抽取历史</h3>
-                <ul class="history-list" id="hisList">
-                </ul>
-            </div>
-        </div>
-        
         <footer>
             <p>鲲鹏五班抽人系统：NortH开发团队 &copy; 2025</p>
         </footer>
     </div>
 
     <script>
-        const stuArr = [
-            "白劭溥", "曹瀚文", "车星伯", "丁子煜", "丁梓轩", 
-            "房勇劭", "管峭", "郭雨佳", "何可馨", "季节", 
-            "李朋泽", "李恕丞", "刘新宇", "马天霖", "逄皓婷", 
-            "秦正", "司雨菲", "苏浩宁", "王景赫", "王哲临", 
-            "王紫嫣", "徐博宇", "杨长城", "于乐水", "张皓然", 
-            "张睿宸", "张艺川", "赵思齐", "朱若冲"
+        const stuData = [
+            {name: "白劭溥", weight: 1},
+            {name: "曹瀚文", weight: 1},
+            {name: "车星伯", weight: 1},
+            {name: "丁子煜", weight: 1},
+            {name: "丁梓轩", weight: 1},
+            {name: "房勇劭", weight: 1},
+            {name: "管峭", weight: 1},
+            {name: "郭雨佳", weight: 1},
+            {name: "何可馨", weight: 1},
+            {name: "季节", weight: 1},
+            {name: "李朋泽", weight: 1},
+            {name: "李恕丞", weight: 1},
+            {name: "刘新宇", weight: 1},
+            {name: "马天霖", weight: 1},
+            {name: "逄皓婷", weight: 1},
+            {name: "秦正", weight: 1},
+            {name: "司雨菲", weight: 1},
+            {name: "苏浩宁", weight: 1},
+            {name: "王景赫", weight: 1},
+            {name: "王哲临", weight: 1},
+            {name: "王紫嫣", weight: 1},
+            {name: "徐博宇", weight: 1},
+            {name: "杨长城", weight: 1},
+            {name: "于乐水", weight: 1},
+            {name: "张皓然", weight: 1},
+            {name: "张睿宸", weight: 1},
+            {name: "张艺川", weight: 1},
+            {name: "赵思齐", weight: 1},
+            {name: "朱若冲", weight: 1}
         ];
 
         let excList = [];
@@ -366,14 +393,14 @@
         function initStu() {
             stuListEl.innerHTML = '';
             
-            stuArr.forEach((stu, idx) => {
+            stuData.forEach((stu, idx) => {
                 const card = document.createElement('div');
                 card.className = 'student-card';
                 card.dataset.id = idx;
                 
                 card.innerHTML = `
                     <div class="student-id">${idx + 1}号</div>
-                    <div class="student-name">${stu}</div>
+                    <div class="student-name">${stu.name}</div>
                 `;
                 
                 card.addEventListener('click', () => {
@@ -400,7 +427,7 @@
             excList = [];
             const cards = document.querySelectorAll('.student-card');
             
-            stuArr.forEach((_, idx) => {
+            stuData.forEach((_, idx) => {
                 excList.push(idx);
             });
             
@@ -418,10 +445,24 @@
             });
         }
 
+        function getWeightedRandom(arr) {
+            const totalWeight = arr.reduce((sum, item) => sum + stuData[item].weight, 0);
+            let random = Math.random() * totalWeight;
+            
+            for (let i = 0; i < arr.length; i++) {
+                random -= stuData[arr[i]].weight;
+                if (random <= 0) {
+                    return i;
+                }
+            }
+            
+            return arr.length - 1;
+        }
+
         function drawStu() {
             const num = parseInt(cntInput.value) || 1;
             
-            const availStu = stuArr
+            const availStu = stuData
                 .map((_, idx) => idx)
                 .filter(idx => !excList.includes(idx));
             
@@ -431,18 +472,17 @@
             }
             
             const actualNum = Math.min(num, availStu.length);
-            
             const res = [];
             const tempArr = [...availStu];
             
             for (let i = 0; i < actualNum; i++) {
                 if (tempArr.length === 0) break;
                 
-                const randIdx = Math.floor(Math.random() * tempArr.length);
-                const stuIdx = tempArr.splice(randIdx, 1)[0];
+                const randomIndex = getWeightedRandom(tempArr);
+                const stuIdx = tempArr.splice(randomIndex, 1)[0];
                 res.push({
                     id: stuIdx,
-                    name: stuArr[stuIdx]
+                    name: stuData[stuIdx].name
                 });
             }
             
@@ -509,6 +549,10 @@
         selNoneBtn.addEventListener('click', noneStu);
 
         initStu();
+
+        // 在控制台可以修改权重，例如：stuData[0].weight = 5
+        console.log('权重调整方法：在控制台输入 stuData[索引].weight = 新权重');
+        console.log('例如：stuData[0].weight = 5 将"白劭溥"的权重设为5');
     </script>
 </body>
 </html>
