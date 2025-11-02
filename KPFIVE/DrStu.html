@@ -208,6 +208,9 @@
         .result-container {
             text-align: center;
             padding: 30px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
         }
         
         .result-title {
@@ -217,7 +220,7 @@
         }
         
         .result-display {
-            min-height: 200px;
+            flex: 1;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -303,11 +306,12 @@
                 <div class="control-group">
                     <h3>抽取名单</h3>
                     <p>点击下方（右方）学生卡片可将其加入/移出抽取名单</p>
-                    
-                    <div class="small-button-group">
-                        <button id="selNone" class="success-btn small-button">全选</button>
-                        <button id="selAll" class="warning-btn small-button">全不选</button>
-                    </div>
+
+                </div>
+
+                <div class="small-button-group">
+                    <button id="selNone" class="success-btn small-button">全选</button>
+                    <button id="selAll" class="warning-btn small-button">全不选</button>
                 </div>
                 
                 <div class="button-group">
@@ -316,23 +320,23 @@
                 </div>
             </div>
             
+            <div class="panel result-container">
+                <h2 class="result-title">抽取结果</h2>
+                <div class="result-display" id="resDisplay">
+                    <p>点击"开始抽取"按钮显示结果</p>
+                </div>
+                
+                <div class="history">
+                    <h3 class="history-title">抽取历史</h3>
+                    <ul class="history-list" id="hisList">
+                    </ul>
+                </div>
+            </div>
+            
             <div class="panel students-container">
                 <h2>班级名单</h2>
                 <div class="student-list" id="stuList">
                 </div>
-            </div>
-        </div>
-        
-        <div class="panel result-container">
-            <h2 class="result-title">抽取结果</h2>
-            <div class="result-display" id="resDisplay">
-                <p>点击"开始抽取"按钮显示结果</p>
-            </div>
-            
-            <div class="history">
-                <h3 class="history-title">抽取历史</h3>
-                <ul class="history-list" id="hisList">
-                </ul>
             </div>
         </div>
         
