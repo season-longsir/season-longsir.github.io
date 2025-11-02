@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鲲鹏五班抽人回答问题系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .small-button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .small-button {
+            padding: 10px;
+            font-size: 14px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(to right, #4a90e2, #63b3ed);
+            color: white;
+        }
+        
+        .secondary-btn {
+            background: #f1f1f1;
+            color: #333;
+        }
+        
+        .success-btn {
+            background: linear-gradient(to right, #2ecc71, #1abc9c);
+            color: white;
+        }
+        
+        .warning-btn {
+            background: linear-gradient(to right, #e74c3c, #e67e22);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .primary-btn:hover {
+            background: linear-gradient(to right, #3a7bc8, #4a90e2);
+        }
+        
+        .secondary-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .success-btn:hover {
+            background: linear-gradient(to right, #27ae60, #16a085);
+        }
+        
+        .warning-btn:hover {
+            background: linear-gradient(to right, #c0392b, #d35400);
+        }
+        
+        .students-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .student-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .student-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .student-card.selected {
+            background: #e3f2fd;
+            border-color: #4a90e2;
+        }
+        
+        .student-card.excluded {
+            opacity: 0.5;
+            background: #f5f5f5;
+        }
+        
+        .student-id {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .student-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        .result-display {
+            min-height: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: popIn 0.5s ease-out;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .history {
+            margin-top: 30px;
+        }
+        
+        .history-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .history-list {
+            list-style-type: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 10px 15px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .student-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>鲲鹏五班抽人回答问题系统</h1>
+            <p class="subtitle">随机抽取学生回答问题，支持排除名单和多人抽取</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="panel controls">
+                <h2>抽取设置</h2>
+                <div class="control-group">
+                    <label for="cnt">抽取人数</label>
+                    <input type="number" id="cnt" min="1" max="29" value="1">
+                </div>
+                
+                <div class="control-group">
+                    <h3>抽取名单</h3>
+                    <p>点击下方（右方）学生卡片可将其加入/移出抽取名单</p>
+                </div>
+                
+                <div class="small-button-group">
+                    <button id="selNone" class="success-btn small-button">全选</button>
+                    <button id="selAll" class="warning-btn small-button">全不选</button>
+                </div>
+                <div class="button-group">
+                    <button id="drawBtn" class="primary-btn">开始抽取</button>
+                    <button id="resetBtn" class="secondary-btn">重置抽取名单</button>
+                </div>
+
+            </div>
+            
+            <div class="panel students-container">
+                <h2>班级名单</h2>
+                <div class="student-list" id="stuList">
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel result-container">
+            <h2 class="result-title">抽取结果</h2>
+            <div class="result-display" id="resDisplay">
+                <p>点击"开始抽取"按钮显示结果</p>
+            </div>
+            
+            <div class="history">
+                <h3 class="history-title">抽取历史</h3>
+                <ul class="history-list" id="hisList">
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>鲲鹏五班抽人系统：NortH开发团队 &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        const stuArr = [
+            "白劭溥", "曹瀚文", "车星伯", "丁子煜", "丁梓轩", 
+            "房勇劭", "管峭", "郭雨佳", "何可馨", "季节", 
+            "李朋泽", "李恕丞", "刘新宇", "马天霖", "逄皓婷", 
+            "秦正", "司雨菲", "苏浩宁", "王景赫", "王哲临", 
+            "王紫嫣", "徐博宇", "杨长城", "于乐水", "张皓然", 
+            "张睿宸", "张艺川", "赵思齐", "朱若冲"
+        ];
+
+        let excList = [];
+        let hisArr = [];
+
+        const stuListEl = document.getElementById('stuList');
+        const resDisplayEl = document.getElementById('resDisplay');
+        const hisListEl = document.getElementById('hisList');
+        const drawBtn = document.getElementById('drawBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const selAllBtn = document.getElementById('selAll');
+        const selNoneBtn = document.getElementById('selNone');
+        const cntInput = document.getElementById('cnt');
+
+        function initStu() {
+            stuListEl.innerHTML = '';
+            
+            stuArr.forEach((stu, idx) => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.dataset.id = idx;
+                
+                card.innerHTML = `
+                    <div class="student-id">${idx + 1}号</div>
+                    <div class="student-name">${stu}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    toggleStu(idx, card);
+                });
+                
+                stuListEl.appendChild(card);
+            });
+        }
+
+        function toggleStu(idx, el) {
+            const isExc = excList.includes(idx);
+            
+            if (isExc) {
+                excList = excList.filter(id => id !== idx);
+                el.classList.remove('excluded');
+            } else {
+                excList.push(idx);
+                el.classList.add('excluded');
+            }
+        }
+
+        function allStu() {
+            excList = [];
+            const cards = document.querySelectorAll('.student-card');
+            
+            stuArr.forEach((_, idx) => {
+                excList.push(idx);
+            });
+            
+            cards.forEach(card => {
+                card.classList.add('excluded');
+            });
+        }
+
+        function noneStu() {
+            excList = [];
+            
+            const cards = document.querySelectorAll('.student-card');
+            cards.forEach(card => {
+                card.classList.remove('excluded');
+            });
+        }
+
+        function drawStu() {
+            const num = parseInt(cntInput.value) || 1;
+            
+            const availStu = stuArr
+                .map((_, idx) => idx)
+                .filter(idx => !excList.includes(idx));
+            
+            if (availStu.length === 0) {
+                resDisplayEl.innerHTML = '<p>没有可抽取的学生，请调整排除名单</p>';
+                return;
+            }
+            
+            const actualNum = Math.min(num, availStu.length);
+            
+            const res = [];
+            const tempArr = [...availStu];
+            
+            for (let i = 0; i < actualNum; i++) {
+                if (tempArr.length === 0) break;
+                
+                const randIdx = Math.floor(Math.random() * tempArr.length);
+                const stuIdx = tempArr.splice(randIdx, 1)[0];
+                res.push({
+                    id: stuIdx,
+                    name: stuArr[stuIdx]
+                });
+            }
+            
+            showRes(res);
+            addHis(res);
+        }
+
+        function showRes(res) {
+            resDisplayEl.innerHTML = '';
+            
+            if (res.length === 0) {
+                resDisplayEl.innerHTML = '<p>没有可抽取的学生</p>';
+                return;
+            }
+            
+            res.forEach(stu => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="student-id">${stu.id + 1}号</div>
+                    <div class="student-name">${stu.name}</div>
+                `;
+                resDisplayEl.appendChild(card);
+            });
+        }
+
+        function addHis(res) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            
+            const item = document.createElement('li');
+            item.className = 'history-item';
+            
+            const names = res.map(s => s.name).join('、');
+            item.innerHTML = `
+                <span>${timeStr}</span>
+                <span>${names}</span>
+            `;
+            
+            hisListEl.insertBefore(item, hisListEl.firstChild);
+            
+            if (hisListEl.children.length > 10) {
+                hisListEl.removeChild(hisListEl.lastChild);
+            }
+            
+            hisArr.unshift({
+                time: timeStr,
+                students: res
+            });
+        }
+
+        function resetExc() {
+            excList = [];
+            
+            const cards = document.querySelectorAll('.student-card');
+            cards.forEach(card => {
+                card.classList.remove('excluded');
+            });
+        }
+
+        drawBtn.addEventListener('click', drawStu);
+        resetBtn.addEventListener('click', resetExc);
+        selAllBtn.addEventListener('click', allStu);
+        selNoneBtn.addEventListener('click', noneStu);
+
+        initStu();
+    </script>
+</body>
+</html>
