@@ -440,6 +440,67 @@
                 height: 150px;
             }
         }
+
+        /* popup */
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.45);
+            z-index: 9999;
+        }
+
+        .popup-box {
+            background: #fff;
+            color: #222;
+            padding: 18px 26px;
+            border-radius: 12px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 80%;
+            text-align: center;
+            transform: scale(0.95);
+            animation: popupIn 220ms ease-out;
+        }
+
+        @keyframes popupIn {
+            0% { opacity: 0; transform: scale(0.92); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .student-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .scrolling-student {
+                font-size: 1.8rem;
+            }
+            
+            .animation-container {
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -780,6 +841,35 @@
                 `;
                 resDisplayEl.appendChild(card);
             });
+
+            // 根据结果弹出短暂提示，抽到 "季节" 显示特殊内容
+            const hitJiji = res.some(s => s.name === '季节' || s.id === 9);
+            if (hitJiji) {
+                showPopup('不！怎么能抽到我！回旋镖还是砸在了自己身上！');
+            } else {
+                showPopup('好诶！我又躲过一劫！就抽你啦！');
+            }
+        }
+
+        function showPopup(msg) {
+            // 避免同时存在多个弹窗
+            const prev = document.getElementById('resultPopup');
+            if (prev) prev.remove();
+
+            const overlay = document.createElement('div');
+            overlay.id = 'resultPopup';
+            overlay.className = 'popup-overlay';
+
+            const box = document.createElement('div');
+            box.className = 'popup-box';
+            box.textContent = msg;
+
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.remove();
+            }, 3000);
         }
 
         function addHis(res) {
@@ -817,6 +907,8 @@
                 card.classList.remove('excluded');
             });
         }
+
+
 
         drawBtn.addEventListener('click', drawStu);
         resetBtn.addEventListener('click', resetExc);
