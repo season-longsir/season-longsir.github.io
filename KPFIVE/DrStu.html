@@ -528,6 +528,17 @@
                     </div>
                     <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">开启后抽取时会有滚动动画效果</p>
                 </div>
+
+                <div class="control-group">
+                    <div class="toggle-container">
+                        <label class="toggle-label">启用结果弹窗</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="popupToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">开启后抽取结果会弹出短暂提示</p>
+                </div>
                 
                 <div class="control-group">
                     <h3>抽取名单</h3>
@@ -616,6 +627,7 @@
         const selNoneBtn = document.getElementById('selNone');
         const cntInput = document.getElementById('cnt');
         const animationToggle = document.getElementById('animationToggle');
+        const popupToggle = document.getElementById('popupToggle');
 
         function initStu() {
             stuListEl.innerHTML = '';
@@ -843,11 +855,13 @@
             });
 
             // 根据结果弹出短暂提示，抽到 "季节" 显示特殊内容
-            const hitJiji = res.some(s => s.name === '季节' || s.id === 9);
-            if (hitJiji) {
-                showPopup('不！怎么能抽到我！回旋镖还是砸在了自己身上！');
-            } else {
-                showPopup('好诶！我又躲过一劫！就抽你啦！');
+            if (!popupToggle || popupToggle.checked) {
+                const hitJiji = res.some(s => s.name === '季节' || s.id === 9);
+                if (hitJiji) {
+                    showPopup('不！怎么能抽到我！回旋镖还是砸在了自己身上！');
+                } else {
+                    showPopup('好诶！我又躲过一劫！就抽你啦！');
+                }
             }
         }
 
