@@ -47,6 +47,7 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
+            align-items: stretch; /* 横向排列时让子 panel 同高 */
         }
         
         .panel {
@@ -56,12 +57,17 @@
             padding: 25px;
             flex: 1;
             min-width: 300px;
+            display: flex;           /* flex 布局，方便内部伸缩 */
+            flex-direction: column;  /* 内部垂直排列：头部/内容/底部 */
+            min-height: 0;          /* 允许在父 flex 容器中正确收缩（防止溢出问题） */
         }
         
         .controls {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            flex: 1;      /* 控件面板随父面板高度伸展 */
+            min-height: 0;/* 允许正确收缩/滚动 */
         }
         
         .control-group {
@@ -224,6 +230,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
+            flex: 1;         /* 在横向并排时填满父 panel 的可用高度 */
+            min-height: 0;   /* 与父 flex 行为配合，允许内滚动 */
+            overflow: auto;  /* 超出时滚动显示 */
         }
         
         .student-card {
@@ -265,9 +274,10 @@
         .result-container {
             text-align: center;
             padding: 30px;
-            min-height: 400px;
+            min-height: 0;          /* 允许在父 panel 中正确伸缩 */
             display: flex;
             flex-direction: column;
+            flex: 1;                /* 填满父 panel 的可用高度，保证与其它 panel 等高 */
         }
         
         .result-title {
@@ -426,10 +436,18 @@
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
+                align-items: flex-start; /* 竖屏时恢复自然高度 */
+            }
+            
+            .panel {
+                display: block; /* 竖屏时每个 panel 按内容自适应 */
             }
             
             .student-list {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                overflow: visible;
+                flex: initial;
+                min-height: initial;
             }
             
             .scrolling-student {
