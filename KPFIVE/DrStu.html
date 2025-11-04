@@ -89,6 +89,63 @@
             outline: none;
         }
         
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .toggle-label {
+            margin-bottom: 0;
+            flex: 1;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #4a90e2;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
         .button-group {
             display: flex;
             gap: 10px;
@@ -269,6 +326,95 @@
             justify-content: space-between;
         }
         
+        /* 动画相关样式 */
+        .animation-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .scrolling-student {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s linear;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .animation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.2) 100%);
+            pointer-events: none;
+        }
+        
+        .animation-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid rgba(255,255,255,0.5);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        
+        .animation-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 3px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .animation-indicator::before,
+        .animation-indicator::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.8);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .animation-indicator::before {
+            left: -30px;
+        }
+        
+        .animation-indicator::after {
+            right: -30px;
+        }
+        
+        .animation-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
         footer {
             text-align: center;
             color: white;
@@ -285,6 +431,14 @@
             .student-list {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
+            
+            .scrolling-student {
+                font-size: 1.8rem;
+            }
+            
+            .animation-container {
+                height: 150px;
+            }
         }
     </style>
 </head>
@@ -300,20 +454,30 @@
                 <h2>抽取设置</h2>
                 <div class="control-group">
                     <label for="cnt">抽取人数</label>
-                    <input type="number" id="cnt" min="1" max="10" value="1">
+                    <input type="number" id="cnt" min="1" max="29" value="1">
+                </div>
+                
+                <div class="control-group">
+                    <div class="toggle-container">
+                        <label class="toggle-label">启用滚动动画</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="animationToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">开启后抽取时会有滚动动画效果</p>
                 </div>
                 
                 <div class="control-group">
                     <h3>抽取名单</h3>
                     <p>点击下方（右方）学生卡片可将其加入/移出抽取名单</p>
-
                 </div>
-
+                
                 <div class="small-button-group">
                     <button id="selNone" class="success-btn small-button">全选</button>
                     <button id="selAll" class="warning-btn small-button">全不选</button>
                 </div>
-                
+
                 <div class="button-group">
                     <button id="drawBtn" class="primary-btn">开始抽取</button>
                     <button id="resetBtn" class="secondary-btn">重置抽取名单</button>
@@ -380,6 +544,7 @@
 
         let excList = [];
         let hisArr = [];
+        let isAnimating = false;
 
         const stuListEl = document.getElementById('stuList');
         const resDisplayEl = document.getElementById('resDisplay');
@@ -389,6 +554,7 @@
         const selAllBtn = document.getElementById('selAll');
         const selNoneBtn = document.getElementById('selNone');
         const cntInput = document.getElementById('cnt');
+        const animationToggle = document.getElementById('animationToggle');
 
         function initStu() {
             stuListEl.innerHTML = '';
@@ -412,6 +578,8 @@
         }
 
         function toggleStu(idx, el) {
+            if (isAnimating) return;
+            
             const isExc = excList.includes(idx);
             
             if (isExc) {
@@ -424,6 +592,8 @@
         }
 
         function allStu() {
+            if (isAnimating) return;
+            
             excList = [];
             const cards = document.querySelectorAll('.student-card');
             
@@ -437,6 +607,8 @@
         }
 
         function noneStu() {
+            if (isAnimating) return;
+            
             excList = [];
             
             const cards = document.querySelectorAll('.student-card');
@@ -459,7 +631,101 @@
             return arr.length - 1;
         }
 
+        // 创建动画容器
+        function createAnimationContainer() {
+            const container = document.createElement('div');
+            container.className = 'animation-container';
+            
+            const scrollingStudent = document.createElement('div');
+            scrollingStudent.className = 'scrolling-student';
+            scrollingStudent.id = 'scrollingStudent';
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'animation-overlay';
+            
+            const border = document.createElement('div');
+            border.className = 'animation-border';
+            
+            const indicator = document.createElement('div');
+            indicator.className = 'animation-indicator animation-pulse';
+            
+            container.appendChild(scrollingStudent);
+            container.appendChild(overlay);
+            container.appendChild(border);
+            container.appendChild(indicator);
+            
+            return container;
+        }
+
+        // 滚动动画
+        function animateSelection(availableStudents, finalResult, onComplete) {
+            isAnimating = true;
+            drawBtn.disabled = true;
+
+            const container = createAnimationContainer();
+            resDisplayEl.innerHTML = '';
+            resDisplayEl.appendChild(container);
+
+            const scrollingEl = document.getElementById('scrollingStudent');
+            const availNames = availableStudents.map(idx => stuData[idx].name);
+
+            let speed = 50; // 初始速度 (ms)
+            let currentIndex = 0;
+            let animationCount = 0;
+            const maxAnimations = 30 + Math.floor(Math.random() * 20); // 随机动画次数
+
+            function step() {
+                if (availNames.length === 0) {
+                    container.remove();
+                    isAnimating = false;
+                    drawBtn.disabled = false;
+                    if (onComplete) onComplete();
+                    return;
+                }
+
+                currentIndex = (currentIndex + 1) % availNames.length;
+                scrollingEl.textContent = availNames[currentIndex];
+
+                animationCount++;
+
+                // 逐渐减速
+                if (animationCount > maxAnimations * 0.7) {
+                    speed += 25;
+                } else if (animationCount > maxAnimations * 0.4) {
+                    speed += 15;
+                } else if (animationCount > maxAnimations * 0.2) {
+                    speed += 10;
+                }
+
+                if (animationCount >= maxAnimations) {
+                    const finalIndex = availableStudents.findIndex(idx =>
+                        finalResult.some(r => r.id === idx)
+                    );
+
+                    if (finalIndex !== -1) {
+                        currentIndex = finalIndex;
+                        scrollingEl.textContent = availNames[currentIndex];
+                    }
+
+                    setTimeout(() => {
+                        container.remove();
+                        showRes(finalResult);
+                        addHis(finalResult);
+                        isAnimating = false;
+                        drawBtn.disabled = false;
+                        if (onComplete) onComplete();
+                    }, 800);
+                } else {
+                    setTimeout(step, speed);
+                }
+            }
+
+            setTimeout(step, speed);
+        }
+
         function drawStu() {
+            if (isAnimating) return;
+            
             const num = parseInt(cntInput.value) || 1;
             
             const availStu = stuData
@@ -486,8 +752,15 @@
                 });
             }
             
-            showRes(res);
-            addHis(res);
+            // 根据开关状态决定是否使用动画
+            if (animationToggle.checked) {
+                // 使用动画抽取
+                animateSelection(availStu, res);
+            } else {
+                // 直接显示结果
+                showRes(res);
+                addHis(res);
+            }
         }
 
         function showRes(res) {
@@ -535,6 +808,8 @@
         }
 
         function resetExc() {
+            if (isAnimating) return;
+            
             excList = [];
             
             const cards = document.querySelectorAll('.student-card');
