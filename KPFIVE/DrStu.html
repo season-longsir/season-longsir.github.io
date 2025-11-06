@@ -570,6 +570,7 @@
 
                 <div class="button-group">
                     <button id="drawBtn" class="primary-btn">开始抽取</button>
+                    <button id="skipBtn" class="warning-btn" style="display:none;">跳过动画</button>
                     <button id="resetBtn" class="secondary-btn">重置抽取名单</button>
                 </div>
             </div>
@@ -646,6 +647,9 @@
         const cntInput = document.getElementById('cnt');
         const animationToggle = document.getElementById('animationToggle');
         const popupToggle = document.getElementById('popupToggle');
+        const skipBtn = document.getElementById('skipBtn');
+        let animationController = null;
+
 
         function initStu() {
             stuListEl.innerHTML = '';
@@ -752,6 +756,9 @@
         function animateSelection(availableStudents, finalResult, onComplete) {
             isAnimating = true;
             drawBtn.disabled = true;
+            // 显示跳过按钮
+            skipBtn.style.display = 'inline-block';
+            skipBtn.disabled = false;
 
             const container = createAnimationContainer();
             resDisplayEl.innerHTML = '';
@@ -764,13 +771,38 @@
             let currentIndex = 0;
             let animationCount = 0;
             const maxAnimations = 30 + Math.floor(Math.random() * 20); // 随机动画次数
+            let currentTimeout = null;
+
+            function finalizeNow() {
+                if (currentTimeout) {
+                    clearTimeout(currentTimeout);
+                    currentTimeout = null;
+                }
+                if (container && container.parentNode) container.remove();
+                showRes(finalResult);
+                addHis(finalResult);
+                isAnimating = false;
+                drawBtn.disabled = false;
+                skipBtn.style.display = 'none';
+                animationController = null;
+                if (onComplete) onComplete();
+            }
+
+            animationController = {
+                cancelled: false,
+                cancel: function () {
+                    this.cancelled = true;
+                    finalizeNow();
+                }
+            };
 
             function step() {
+                if (animationController && animationController.cancelled) {
+                    return;
+                }
+
                 if (availNames.length === 0) {
-                    container.remove();
-                    isAnimating = false;
-                    drawBtn.disabled = false;
-                    if (onComplete) onComplete();
+                    finalizeNow();
                     return;
                 }
 
@@ -798,20 +830,15 @@
                         scrollingEl.textContent = availNames[currentIndex];
                     }
 
-                    setTimeout(() => {
-                        container.remove();
-                        showRes(finalResult);
-                        addHis(finalResult);
-                        isAnimating = false;
-                        drawBtn.disabled = false;
-                        if (onComplete) onComplete();
+                    currentTimeout = setTimeout(() => {
+                        finalizeNow();
                     }, 800);
                 } else {
-                    setTimeout(step, speed);
+                    currentTimeout = setTimeout(step, speed);
                 }
             }
 
-            setTimeout(step, speed);
+            currentTimeout = setTimeout(step, speed);
         }
 
         function drawStu() {
@@ -940,12 +967,19 @@
             });
         }
 
+        skipBtn.addEventListener('click', () => {
+            if (animationController && typeof animationController.cancel === 'function') {
+                animationController.cancel();
+            }
+        });
+
 
 
         drawBtn.addEventListener('click', drawStu);
         resetBtn.addEventListener('click', resetExc);
         selAllBtn.addEventListener('click', allStu);
         selNoneBtn.addEventListener('click', noneStu);
+        skipBtn.style.display = 'none';
 
         initStu();
 
