@@ -557,7 +557,14 @@
                     </div>
                     <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">开启后抽取结果会弹出短暂提示</p>
                 </div>
-                
+
+                <!-- 新增：滚动时长滑动条 -->
+                <div class="control-group">
+                    <label for="durationSlider">滚动时长（ms）</label>
+                    <input type="range" id="durationSlider" min="10" max="50" value="25">
+                    <div style="font-size:0.9rem;color:#666;margin-top:6px;">当前：<span id="durationValue">25</span> ms</div>
+                </div>
+
                 <div class="control-group">
                     <h3>抽取名单</h3>
                     <p>点击下方（右方）学生卡片可将其加入/移出抽取名单</p>
@@ -649,6 +656,15 @@
         const popupToggle = document.getElementById('popupToggle');
         const skipBtn = document.getElementById('skipBtn');
         let animationController = null;
+        // 新增：滑块元素，控制滚动初始时长（ms）
+        const durationSlider = document.getElementById('durationSlider');
+        const durationValue = document.getElementById('durationValue');
+        if (durationSlider && durationValue) {
+            durationValue.textContent = durationSlider.value;
+            durationSlider.addEventListener('input', () => {
+                durationValue.textContent = durationSlider.value;
+            });
+        }
 
 
         function initStu() {
@@ -767,11 +783,13 @@
             const scrollingEl = document.getElementById('scrollingStudent');
             const availNames = availableStudents.map(idx => stuData[idx].name);
 
-            let speed = 50; // 初始速度 (ms)
-            let currentIndex = 0;
-            let animationCount = 0;
-            const maxAnimations = 30 + Math.floor(Math.random() * 20); // 随机动画次数
-            let currentTimeout = null;
+            // 使用滑块的值作为初始速度（ms），若不存在则使用默认 50
+            const baseSpeed = (typeof durationSlider !== 'undefined' && durationSlider) ? (parseInt(durationSlider.value, 10) || 50) : 50;
+            let speed = baseSpeed; // 初始速度 (ms)
+             let currentIndex = 0;
+             let animationCount = 0;
+             const maxAnimations = 30 + Math.floor(Math.random() * 20); // 随机动画次数
+             let currentTimeout = null;
 
             function finalizeNow() {
                 if (currentTimeout) {
@@ -811,13 +829,13 @@
 
                 animationCount++;
 
-                // 逐渐减速
+                // 逐渐减速，减速增量基于 baseSpeed 的比例，使滑块更直观影响动画时长
                 if (animationCount > maxAnimations * 0.7) {
-                    speed += 25;
+                    speed += Math.max(10, Math.round(baseSpeed * 0.6));
                 } else if (animationCount > maxAnimations * 0.4) {
-                    speed += 15;
+                    speed += Math.max(6, Math.round(baseSpeed * 0.3));
                 } else if (animationCount > maxAnimations * 0.2) {
-                    speed += 10;
+                    speed += Math.max(3, Math.round(baseSpeed * 0.15));
                 }
 
                 if (animationCount >= maxAnimations) {
