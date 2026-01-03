@@ -1,14 +1,831 @@
 <!DOCTYPE html>
-<html leng="en" >
-  <head>
-    <title>是Yommi-曜青呀</title>
-    <script src="https://season-longsir.github.io/live2d/autoload.js"></script>
-  </head>
-  <body>
-    <h1><em><strong>season-longsir.github.io</strong></em></h1>
-<h2>欢迎来到我的网站</h2>
-<h3>很高兴见到你</h3>
-<p>该网站正在更新中，请稍后……</p>
-  </body>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曙猫書 | 曜青Yommi的博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-blue: #2a6bb1;
+            --accent-orange: #ff7a45;
+            --light-blue: #e6f7ff;
+            --dark-blue: #1a4f8c;
+            --text-dark: #333;
+            --text-light: #666;
+            --background: #f9f9f9;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 背景装饰元素 */
+        .paw-print {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            opacity: 0.05;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232a6bb1' d='M12,2C8.1,2,5,5.1,5,9c0,5.2,7,13,7,13s7-7.8,7-13C19,5.1,15.9,2,12,2z M12,11.5c-1.4,0-2.5-1.1-2.5-2.5 s1.1-2.5,2.5-2.5s2.5,1.1,2.5,2.5S13.4,11.5,12,11.5z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        /* 导航栏 */
+        nav {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+        
+        .logo i {
+            color: var(--accent-orange);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-orange);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 页面容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 页头 */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--light-blue) 0%, rgba(255,122,69,0.1) 100%);
+            border-radius: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header .tagline {
+            font-size: 1.2rem;
+            color: var(--accent-orange);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .fursona-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-orange) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            box-shadow: var(--shadow);
+        }
+        
+        /* 模块卡片 */
+        .module {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .module:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+        
+        .module-title {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+        }
+        
+        /* 学习模块特殊样式 */
+        .learning-module {
+            border-top: 5px solid #4CAF50;
+        }
+        
+        .learning-module .module-icon {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+        
+        /* 编程模块特殊样式 */
+        .coding-module {
+            border-top: 5px solid #2196F3;
+        }
+        
+        .coding-module .module-icon {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+        }
+        
+        /* 音乐模块特殊样式 */
+        .music-module {
+            border-top: 5px solid #9C27B0;
+        }
+        
+        .music-module .module-icon {
+            background-color: rgba(156, 39, 176, 0.1);
+            color: #9C27B0;
+        }
+        
+        /* 福瑞模块特殊样式 */
+        .furry-module {
+            border-top: 5px solid #FF9800;
+        }
+        
+        .furry-module .module-icon {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: #FF9800;
+        }
+        
+        /* 游戏模块特殊样式 */
+        .gaming-module {
+            border-top: 5px solid #E91E63;
+        }
+        
+        .gaming-module .module-icon {
+            background-color: rgba(233, 30, 99, 0.1);
+            color: #E91E63;
+        }
+        
+        /* 内容样式 */
+        .content-section {
+            margin-bottom: 20px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .content-list {
+            list-style-position: inside;
+            padding-left: 10px;
+        }
+        
+        .content-list li {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        .content-list li i {
+            margin-right: 8px;
+            color: var(--accent-orange);
+        }
+        
+        /* 项目展示 */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .project-card {
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .project-title {
+            font-weight: bold;
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .project-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* 游戏展示 */
+        .game-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .game-tag {
+            background-color: var(--light-blue);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 社交链接 */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-dark);
+            background-color: var(--light-blue);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-blue);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* 留言区 */
+        .comment-section {
+            margin-top: 50px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .comment-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-blue);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+        }
+        
+        .submit-btn {
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--dark-blue);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-blue);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-text {
+            opacity: 0.8;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-links {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fursona-avatar {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰元素 -->
+    <div class="paw-print" style="top: 10%; left: 5%;"></div>
+    <div class="paw-print" style="top: 15%; right: 8%;"></div>
+    <div class="paw-print" style="bottom: 20%; left: 10%;"></div>
+    <div class="paw-print" style="bottom: 15%; right: 5%;"></div>
+    
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-cat"></i>
+                <span>曙猫書 | 曜青Yommi</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="#learning"><i class="fas fa-book"></i> 学习</a></li>
+                <li><a href="#coding"><i class="fas fa-code"></i> 编程</a></li>
+                <li><a href="#music"><i class="fas fa-music"></i> 音乐</a></li>
+                <li><a href="#furry"><i class="fas fa-paw"></i> 福瑞</a></li>
+                <li><a href="#gaming"><i class="fas fa-gamepad"></i> 游戏</a></li>
+                <li><a href="#contact"><i class="fas fa-comments"></i> 留言</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 页面内容 -->
+    <div class="container">
+        <!-- 首页 -->
+        <section id="home" class="header">
+            <div class="fursona-avatar">
+                <i class="fas fa-cat"></i>
+            </div>
+            <h1>曙猫書 <i class="fas fa-paw"></i> 曜青Yommi</h1>
+            <div class="tagline">The story remains unfinished...</div>
+            <p>一只可爱的蓝色小猫，热爱编程、音乐和游戏的福瑞控，正在书写自己的故事。</p>
+            
+            <div class="social-links">
+                <a href="https://github.com/season-longsir/" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://space.bilibili.com/3546825512454955" class="social-link" target="_blank">
+                    <i class="fab fa-bilibili"></i> Bilibili
+                </a>
+                <a href="tencent://message/?uin=3389786744&Site=&Menu=yes" class="social-link">
+                    <i class="fab fa-qq"></i> QQ
+                </a>
+            </div>
+        </section>
+        
+        <!-- 学习模块 -->
+        <section id="learning" class="module learning-module">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2 class="module-title">学习模块</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-star"></i> 擅长学科</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-atom"></i> 信息科技：熟练掌握计算机基础知识与信息技术应用</li>
+                    <li><i class="fas fa-flask"></i> 理科思维：数学、物理等理科科目学习能力强</li>
+                    <li><i class="fas fa-language"></i> 英语：具备良好的英语阅读与交流能力</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-bullseye"></i> 学习目标</h3>
+                <p>目前正在探索高中各学科知识的深度与广度，计划建立系统化的知识体系，为未来的专业发展打下坚实基础。</p>
+            </div>
+        </section>
+        
+        <!-- 编程模块 -->
+        <section id="coding" class="module coding-module">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h2 class="module-title">编程模块</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-code"></i> 编程技能</h3>
+                <ul class="content-list">
+                    <li><i class="fab fa-python"></i> Python：最熟练，用于解决数学问题、数据分析</li>
+                    <li><i class="fas fa-cogs"></i> C++：其次熟练，用于算法学习和游戏开发</li>
+                    <li><i class="fab fa-java"></i> Java：掌握基础，用于Minecraft模组开发</li>
+                    <li><i class="fas fa-gamepad"></i> C#：比较熟练，用于游戏开发</li>
+                    <li><i class="fab fa-html5"></i> HTML/CSS/JS：前端开发，网页设计</li>
+                    <li><i class="fas fa-database"></i> MySQL：数据库管理</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-project-diagram"></i> 项目展示</h3>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-title">EQ - 数学问题求解器</div>
+                        <div class="project-desc">解决一系列常见的数学问题，如解方程、不等式、绘制函数图像等，使用Python开发，界面友好。</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-title">班级抽人系统</div>
+                        <div class="project-desc">为班级设计的随机抽人回答问题系统，公平公正，增加课堂互动性。</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-title">班级网页设计</div>
+                        <div class="project-desc">为班级设计的展示网页，包含班级动态、同学风采、学习资源等模块。</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-title">Minecraft模组</div>
+                        <div class="project-desc">使用Java编写的Minecraft自定义模组，添加新物品、生物和游戏机制。</div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-title">解谜游戏开发</div>
+                        <div class="project-desc">使用C#和Unity开发的各类解谜游戏，注重逻辑性与趣味性结合。</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-compass"></i> 编程方向</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-gamepad"></i> 游戏开发：Unity引擎，C#编程</li>
+                    <li><i class="fas fa-palette"></i> 网页设计：前端开发，用户体验设计</li>
+                    <li><i class="fas fa-chart-line"></i> 数据分析：Python数据处理与可视化</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 音乐模块 -->
+        <section id="music" class="module music-module">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h2 class="module-title">音乐模块</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-headphones"></i> 音乐偏好</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-compact-disc"></i> 流行音乐：喜欢旋律优美、节奏明快的流行曲目</li>
+                    <li><i class="fas fa-globe-americas"></i> 英文歌曲：欣赏英文歌词的意境与表达方式</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-guitar"></i> 音乐才能</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-violin"></i> 大提琴：学习并演奏大提琴，享受古典音乐的魅力</li>
+                    <li><i class="fas fa-edit"></i> 作曲：尝试过歌曲创作，表达情感与想法</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 福瑞模块 -->
+        <section id="furry" class="module furry-module">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <h2 class="module-title">福瑞模块</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-cat"></i> 兽设介绍</h3>
+                <p>我是一只可爱的蓝色小猫，拥有柔软蓬松的毛发和明亮的眼睛。性格温和但充满好奇心，喜欢探索新事物，热爱学习与创造。我的故事还在继续书写中...</p>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-film"></i> 喜欢的兽人作品</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-book-open"></i> 《有兽焉》：喜欢的兽人题材作品</li>
+                    <li>其他兽人动漫、漫画和游戏</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-paint-brush"></i> 兽人创作</h3>
+                <p>积极参与兽人创作，包括绘画和写作，通过艺术形式表达兽人角色的个性与故事。</p>
+            </div>
+        </section>
+        
+        <!-- 游戏模块 -->
+        <section id="gaming" class="module gaming-module">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h2 class="module-title">游戏模块</h2>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-gamepad"></i> 游戏类型偏好</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-drum"></i> 音游：节奏感强，考验反应与协调能力</li>
+                    <li><i class="fas fa-cube"></i> 沙盒游戏：创造与自由度高，发挥想象力</li>
+                    <li><i class="fas fa-globe"></i> 开放世界：探索广阔世界，沉浸式体验</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-heart"></i> 最爱的游戏</h3>
+                <div class="game-list">
+                    <div class="game-tag"><i class="fas fa-fire"></i> A Dance of Fire and Ice</div>
+                    <div class="game-tag"><i class="fas fa-heartbeat"></i> Rhythm Doctor</div>
+                    <div class="game-tag"><i class="fas fa-music"></i> Phigros</div>
+                    <div class="game-tag"><i class="fas fa-cube"></i> Minecraft</div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="content-title"><i class="fas fa-user-circle"></i> 游戏风格偏好</h3>
+                <ul class="content-list">
+                    <li><i class="fas fa-search"></i> 探索：喜欢在游戏中发现新区域、隐藏要素</li>
+                    <li><i class="fas fa-drum"></i> 节奏：享受音乐与操作完美结合的游戏体验</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 留言区 -->
+        <section id="contact" class="comment-section">
+            <h2><i class="fas fa-comments"></i> 留言区</h2>
+            <p>欢迎留下你的想法、建议或只是想打个招呼！我会定期查看并回复。</p>
+            
+            <div class="comment-form">
+                <div class="form-group">
+                    <label for="name">昵称：</label>
+                    <input type="text" id="name" placeholder="请输入你的昵称">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">邮箱（可选）：</label>
+                    <input type="email" id="email" placeholder="请输入你的邮箱（可选）">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">留言内容：</label>
+                    <textarea id="message" rows="5" placeholder="请输入你想说的话..."></textarea>
+                </div>
+                
+                <button class="submit-btn" onclick="submitComment()">提交留言</button>
+            </div>
+            
+            <div id="comment-list" style="margin-top: 30px;">
+                <h3>近期留言</h3>
+                <div id="comments-container">
+                    <!-- 留言将通过JS动态添加 -->
+                    <p style="text-align: center; color: #999; padding: 20px;">暂无留言，快来成为第一个留言的人吧！</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/season-longsir/" class="social-link" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://space.bilibili.com/3546825512454955" class="social-link" target="_blank">
+                <i class="fab fa-bilibili"></i> Bilibili
+            </a>
+            <a href="tencent://message/?uin=3389786744&Site=&Menu=yes" class="social-link">
+                <i class="fab fa-qq"></i> QQ
+            </a>
+        </div>
+        <p class="footer-text">© 2023 曙猫書 | 曜青Yommi 的个人博客 | The story remains unfinished...</p>
+        <p class="footer-text">本博客纯HTML编写，无需后端支持</p>
+    </footer>
+    
+    <script>
+        // 简单留言系统（前端模拟）
+        function submitComment() {
+            const name = document.getElementById('name').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (!name || !message) {
+                alert('请填写昵称和留言内容！');
+                return;
+            }
+            
+            const commentContainer = document.getElementById('comments-container');
+            const email = document.getElementById('email').value.trim();
+            const now = new Date();
+            const timeString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString().substring(0, 5);
+            
+            // 创建新留言
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'project-card';
+            commentDiv.style.marginBottom = '15px';
+            
+            let emailText = email ? `<br><small>邮箱：${email}</small>` : '';
+            commentDiv.innerHTML = `
+                <div class="project-title">
+                    <i class="fas fa-user"></i> ${name}
+                    <span style="font-size: 0.8rem; color: #999; margin-left: 10px;">${timeString}</span>
+                </div>
+                <div class="project-desc">${message.replace(/\n/g, '<br>')}${emailText}</div>
+            `;
+            
+            // 如果当前显示"暂无留言"则清除
+            if (commentContainer.children.length === 1 && commentContainer.children[0].style.textAlign) {
+                commentContainer.innerHTML = '';
+            }
+            
+            // 将新留言添加到顶部
+            commentContainer.insertBefore(commentDiv, commentContainer.firstChild);
+            
+            // 清空表单
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+            
+            alert('留言提交成功！感谢你的留言。');
+        }
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 添加更多爪印背景元素
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            
+            for (let i = 0; i < 8; i++) {
+                const paw = document.createElement('div');
+                paw.className = 'paw-print';
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = 20 + Math.random() * 30;
+                
+                // 随机旋转
+                const rotation = Math.random() * 360;
+                
+                paw.style.top = `${top}%`;
+                paw.style.left = `${left}%`;
+                paw.style.width = `${size}px`;
+                paw.style.height = `${size}px`;
+                paw.style.transform = `rotate(${rotation}deg)`;
+                paw.style.opacity = 0.03 + Math.random() * 0.05;
+                
+                body.appendChild(paw);
+            }
+        });
+    </script>
+</body>
 </html>
-
