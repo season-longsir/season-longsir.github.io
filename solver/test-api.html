@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek API 测试</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#f59e0b',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">DeepSeek API 连接测试</h1>
+            <p class="text-gray-600">测试DeepSeek API连接是否正常工作</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">API 密钥</label>
+                <input type="password" id="api-key" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="请输入API密钥">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">测试题目</label>
+                <textarea id="test-problem" class="w-full p-2 border border-gray-300 rounded-lg h-32">已知函数 f(x)=x³-3x，求其单调区间与极值。</textarea>
+            </div>
+            
+            <button id="test-btn" class="w-full py-2 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-all-300">
+                测试API连接
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试结果</h2>
+            <div id="result" class="font-mono text-sm whitespace-pre-wrap"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiKeyInput = document.getElementById('api-key');
+        const testProblemInput = document.getElementById('test-problem');
+        const testBtn = document.getElementById('test-btn');
+        const resultDiv = document.getElementById('result');
+
+        testBtn.addEventListener('click', async () => {
+            const apiKey = apiKeyInput.value.trim();
+            const problem = testProblemInput.value.trim();
+            
+            if (!apiKey) {
+                resultDiv.textContent = '错误: 请输入API密钥';
+                return;
+            }
+            
+            if (!problem) {
+                resultDiv.textContent = '错误: 请输入测试题目';
+                return;
+            }
+            
+            resultDiv.textContent = '正在测试API连接...';
+            
+            try {
+                // 构建请求
+                const apiUrl = 'https://api.deepseek.com/chat/completions';
+                const requestBody = {
+                    model: 'deepseek-chat',
+                    messages: [
+                        { role: 'system', content: '你是一名优秀的高中数学老师，擅长详细分析题目并提供清晰的解题步骤。' },
+                        { role: 'user', content: `请分析以下数学题目：${problem}` }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 1000,
+                    stream: false
+                };
+                
+                resultDiv.textContent += '\n\n发送请求到: ' + apiUrl;
+                resultDiv.textContent += '\n请求模型: deepseek-chat';
+                
+                // 发送请求
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                resultDiv.textContent += '\n\n响应状态: ' + response.status + ' ' + response.statusText;
+                
+                if (!response.ok) {
+                    // 尝试获取详细错误信息
+                    let errorDetails = '';
+                    try {
+                        const errorData = await response.json();
+                        errorDetails = JSON.stringify(errorData, null, 2);
+                    } catch (e) {
+                        errorDetails = await response.text();
+                    }
+                    throw new Error(`API调用失败: ${response.status} ${response.statusText}\n详细信息: ${errorDetails}`);
+                }
+                
+                const data = await response.json();
+                resultDiv.textContent += '\n\n响应数据:';
+                resultDiv.textContent += '\n' + JSON.stringify(data, null, 2);
+                
+                // 检查响应结构
+                if (data.choices && data.choices.length > 0) {
+                    if (data.choices[0].message && data.choices[0].message.content) {
+                        resultDiv.textContent += '\n\nAPI连接成功!';
+                        resultDiv.textContent += '\n\nAI回复内容预览:';
+                        resultDiv.textContent += '\n' + data.choices[0].message.content.substring(0, 500) + '...';
+                    } else {
+                        throw new Error('无法从API响应中提取内容');
+                    }
+                } else {
+                    throw new Error('API响应中没有找到choices字段');
+                }
+                
+            } catch (error) {
+                resultDiv.textContent += '\n\n错误: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

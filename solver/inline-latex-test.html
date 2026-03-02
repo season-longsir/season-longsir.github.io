@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行内LaTeX测试</title>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+</head>
+<body style="padding: 20px; font-family: Arial, sans-serif;">
+    <h1>行内LaTeX公式渲染测试</h1>
+    
+    <div id="test-container">
+        <h2>测试用例</h2>
+        
+        <h3>1. 基本行内公式</h3>
+        <p>这是一个简单的行内公式：$E = mc^2$</p>
+        <p>这是另一个行内公式：$f(x) = x^2 + 2x + 1$</p>
+        
+        <h3>2. 向量公式</h3>
+        <p>向量公式测试：$\overrightarrow{AB} + \overrightarrow{CD}$</p>
+        <p>多个向量：$\overrightarrow{a} + \overrightarrow{b} = \overrightarrow{c}$</p>
+        
+        <h3>3. 分式和根式</h3>
+        <p>分式测试：$\frac{a+b}{c+d}$</p>
+        <p>根式测试：$\sqrt{x^2 + y^2}$</p>
+        <p>组合测试：$\frac{\sqrt{a+b}}{c+d}$</p>
+        
+        <h3>4. 上下标</h3>
+        <p>上标测试：$x^2 + y^3$</p>
+        <p>下标测试：$a_i + b_j$</p>
+        <p>组合测试：$x_i^2 + y_j^3$</p>
+        
+        <h3>5. 特殊符号</h3>
+        <p>希腊字母：$\alpha + \beta = \gamma$</p>
+        <p>运算符：$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$</p>
+        <p>积分：$\int_{0}^{1} x^2 dx = \frac{1}{3}$</p>
+    </div>
+    
+    <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0;">
+        <h3>调试信息</h3>
+        <div id="debug-info"></div>
+    </div>
+
+    <script>
+        function logDebugInfo(message) {
+            const debugDiv = document.getElementById('debug-info');
+            debugDiv.innerHTML += `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+        }
+        
+        function renderLatex() {
+            logDebugInfo('开始渲染LaTeX公式...');
+            
+            if (typeof renderMathInElement === 'undefined') {
+                logDebugInfo('错误：renderMathInElement函数不可用！');
+                return;
+            }
+            
+            try {
+                const container = document.getElementById('test-container');
+                
+                // 检查容器内容
+                logDebugInfo('容器内容长度：' + container.innerHTML.length);
+                logDebugInfo('容器HTML片段：' + container.innerHTML.substring(0, 200) + '...');
+                
+                // 查找所有包含$的元素
+                const elementsWithDollar = container.querySelectorAll('*');
+                let dollarCount = 0;
+                
+                elementsWithDollar.forEach(el => {
+                    if (el.textContent && el.textContent.includes('$')) {
+                        dollarCount++;
+                        logDebugInfo(`找到包含$的元素：${el.tagName}，内容：${el.textContent.substring(0, 50)}...`);
+                    }
+                });
+                
+                logDebugInfo(`共找到${dollarCount}个包含$的元素`);
+                
+                // 尝试渲染
+                renderMathInElement(container, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false,
+                    trust: true,
+                    processEscapes: true,
+                    processEnvironments: true
+                });
+                
+                logDebugInfo('LaTeX渲染完成！');
+                
+                // 检查渲染后的内容
+                setTimeout(() => {
+                    const katexElements = container.querySelectorAll('.katex');
+                    logDebugInfo(`渲染后找到${katexElements.length}个KaTeX元素`);
+                    
+                    katexElements.forEach((el, index) => {
+                        logDebugInfo(`KaTeX元素${index + 1}：${el.outerHTML.substring(0, 100)}...`);
+                    });
+                }, 100);
+                
+            } catch (error) {
+                logDebugInfo('渲染错误：' + error.message);
+                logDebugInfo('错误堆栈：' + error.stack);
+            }
+        }
+        
+        // 页面加载完成后渲染
+        window.addEventListener('load', function() {
+            logDebugInfo('页面加载完成');
+            logDebugInfo('KaTeX版本：' + (typeof katex !== 'undefined' ? katex.version : '未加载'));
+            logDebugInfo('renderMathInElement可用：' + (typeof renderMathInElement !== 'undefined'));
+            
+            // 等待1秒确保所有资源加载完成
+            setTimeout(renderLatex, 1000);
+        });
+    </script>
+</body>
+</html>

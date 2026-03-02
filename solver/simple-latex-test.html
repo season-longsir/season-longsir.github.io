@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单LaTeX测试</title>
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div style="padding: 20px;">
+        <h1>LaTeX渲染测试</h1>
+        
+        <div id="test-content">
+            <p>这是一个行内公式：$E = mc^2$</p>
+            <p>这是一个块级公式：</p>
+            <p>$$f(x) = x^3 - 3x$$</p>
+            <p>这是向量公式：$\overrightarrow{AB} + \overrightarrow{CD}$</p>
+            <p>这是使用方括号的公式：</p>
+            <p>[ \boxed{2\sqrt{3}} ]</p>
+        </div>
+        
+        <button onclick="renderLatex()">渲染LaTeX</button>
+    </div>
+
+    <script>
+        function renderLatex() {
+            console.log('开始渲染LaTeX...');
+            console.log('renderMathInElement available:', typeof renderMathInElement !== 'undefined');
+            
+            if (typeof renderMathInElement !== 'undefined') {
+                try {
+                    renderMathInElement(document.getElementById('test-content'), {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false},
+                            {left: '[', right: ']', display: true}
+                        ],
+                        throwOnError: false
+                    });
+                    console.log('LaTeX渲染成功！');
+                } catch (error) {
+                    console.error('LaTeX渲染错误:', error);
+                }
+            } else {
+                console.error('renderMathInElement函数不可用！');
+            }
+        }
+        
+        // 页面加载完成后自动渲染
+        window.addEventListener('load', function() {
+            console.log('页面加载完成，检查KaTeX...');
+            console.log('katex available:', typeof katex !== 'undefined');
+            console.log('renderMathInElement available:', typeof renderMathInElement !== 'undefined');
+            
+            // 延迟一下再渲染，确保所有资源都加载完成
+            setTimeout(renderLatex, 1000);
+        });
+    </script>
+</body>
+</html>

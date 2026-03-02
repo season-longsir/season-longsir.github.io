@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中题目分析与解答系统 - 行内LaTeX修复版</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#f59e0b',
+                        dark: '#1e3a8a',
+                        light: '#eff6ff'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .step-item {
+                position: relative;
+            }
+            .step-item::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 24px;
+                bottom: 0;
+                width: 2px;
+                background-color: #e5e7eb;
+            }
+            .step-item:last-child::before {
+                display: none;
+            }
+            .step-number {
+                z-index: 10;
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- 顶部标题 -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-dark mb-2">高中题目分析与解答系统</h1>
+            <p class="text-gray-600">输入题目，获取详细解析和多种解题思路</p>
+        </header>
+
+        <!-- 主内容区 -->
+        <div class="bg-white rounded-xl shadow-card overflow-hidden">
+            <!-- 学科选择导航 -->
+            <nav class="flex flex-wrap bg-dark text-white">
+                <button class="subject-btn active flex-1 py-4 px-6 text-center font-medium text-lg hover:bg-blue-700 transition-all-300" data-subject="math">
+                    <i class="fa fa-calculator mr-2"></i>数学
+                </button>
+                <button class="subject-btn flex-1 py-4 px-6 text-center font-medium text-lg hover:bg-blue-700 transition-all-300" data-subject="physics">
+                    <i class="fa fa-flask mr-2"></i>物理
+                </button>
+                <button class="subject-btn flex-1 py-4 px-6 text-center font-medium text-lg hover:bg-blue-700 transition-all-300" data-subject="chemistry">
+                    <i class="fa fa-atom mr-2"></i>化学
+                </button>
+                <button class="subject-btn flex-1 py-4 px-6 text-center font-medium text-lg hover:bg-blue-700 transition-all-300" data-subject="biology">
+                    <i class="fa fa-dna mr-2"></i>生物
+                </button>
+            </nav>
+
+            <!-- 内容区域 -->
+            <div class="flex flex-col lg:flex-row">
+                <!-- 左侧题目输入区 -->
+                <div class="w-full lg:w-1/2 p-6 border-r border-gray-200">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">题目输入</h2>
+                        
+                        <!-- 输入方式切换 -->
+                        <div class="flex mb-4 border-b border-gray-200">
+                            <button id="text-input-btn" class="input-method-btn active py-2 px-4 font-medium text-primary border-b-2 border-primary">
+                                <i class="fa fa-keyboard-o mr-2"></i>文本输入
+                            </button>
+                            <button id="image-input-btn" class="input-method-btn py-2 px-4 font-medium text-gray-500 hover:text-primary">
+                                <i class="fa fa-image mr-2"></i>图片上传
+                            </button>
+                        </div>
+                        
+                        <!-- 文本输入区域 -->
+                        <div id="text-input-area" class="mb-4">
+                            <textarea id="problem-text" class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all-300" placeholder="请输入题目内容..."></textarea>
+                        </div>
+                        
+                        <!-- 图片上传区域 (默认隐藏) -->
+                        <div id="image-input-area" class="mb-4 hidden">
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-all-300">
+                                <input type="file" id="problem-image" class="hidden" accept="image/*">
+                                <label for="problem-image" class="cursor-pointer">
+                                    <i class="fa fa-cloud-upload text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">点击或拖拽图片到此处上传</p>
+                                    <p class="text-sm text-gray-400 mt-1">支持 JPG、PNG、BMP 格式</p>
+                                </label>
+                            </div>
+                            <div id="image-preview" class="mt-4 hidden">
+                                <img src="" alt="题目图片预览" class="max-w-full h-auto rounded-lg">
+                            </div>
+                        </div>
+                        
+                        <!-- 难度标签 -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2">题目难度</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="difficulty-btn px-3 py-1 rounded-full text-sm border border-gray-300 hover:border-primary hover:text-primary transition-all-300">基础</button>
+                                <button class="difficulty-btn px-3 py-1 rounded-full text-sm border border-gray-300 hover:border-primary hover:text-primary transition-all-300">中等</button>
+                                <button class="difficulty-btn px-3 py-1 rounded-full text-sm border border-gray-300 hover:border-primary hover:text-primary transition-all-300">困难</button>
+                                <button class="difficulty-btn px-3 py-1 rounded-full text-sm border border-gray-300 hover:border-primary hover:text-primary transition-all-300">竞赛</button>
+                            </div>
+                        </div>
+                        
+                        <!-- API配置区域 -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-gray-700 font-medium">AI API 配置</label>
+                                <button id="toggle-api-config" class="text-sm text-primary hover:text-blue-700 transition-all-300">
+                                    <i class="fa fa-cog mr-1"></i>配置
+                                </button>
+                            </div>
+                            <div id="api-config-area" class="hidden">
+                                <div class="mb-2">
+                                    <label class="block text-gray-600 text-sm mb-1">API 密钥</label>
+                                    <input type="password" id="api-key" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all-300" placeholder="请输入API密钥">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="block text-gray-600 text-sm mb-1">API 端点</label>
+                                    <input type="text" id="api-endpoint" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all-300" value="https://api.deepseek.com" placeholder="API端点URL">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="block text-gray-600 text-sm mb-1">模型选择</label>
+                                    <select id="api-model" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all-300">
+                                        <option value="deepseek-chat" selected>DeepSeek Chat</option>
+                                        <option value="deepseek-reasoner">DeepSeek Reasoner</option>
+                                        <option value="gpt-4">GPT-4</option>
+                                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                        <option value="claude-3">Claude 3</option>
+                                        <option value="gemini-pro">Gemini Pro</option>
+                                    </select>
+                                </div>
+                                <button id="save-api-config" class="w-full py-2 bg-secondary hover:bg-green-600 text-white font-medium rounded-lg transition-all-300">
+                                    <i class="fa fa-save mr-1"></i>保存配置
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 分析按钮 -->
+                        <button id="analyze-btn" class="w-full py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-all-300 flex items-center justify-center">
+                            <i class="fa fa-search-plus mr-2"></i>开始分析
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 右侧解题步骤区 -->
+                <div class="w-full lg:w-1/2 p-6 bg-gray-50">
+                    <div id="result-container" class="mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">解题步骤</h2>
+                        
+                        <!-- 初始提示 -->
+                        <div id="initial-prompt" class="text-center py-12">
+                            <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/adf31ef792eb47038641057232d3eaae~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202603022027572DE8F2030CD2284D107D&rrcfp=f06b921b&x-expires=1775046519&x-signature=jqG2Vqr5dzBBii3%2Fqvp4Kcn9qZg%3D" alt="解题步骤示例" class="w-3/4 mx-auto mb-4 opacity-50">
+                            <p class="text-gray-500">请在左侧输入题目并点击"开始分析"按钮</p>
+                        </div>
+                        
+                        <!-- 加载中状态 (默认隐藏) -->
+                        <div id="loading-state" class="hidden">
+                            <div class="flex justify-center items-center py-12">
+                                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                            </div>
+                            <p class="text-center text-gray-600">正在分析题目，请稍候...</p>
+                        </div>
+                        
+                        <!-- 解题结果 (默认隐藏) -->
+                        <div id="solution-result" class="hidden">
+                            <!-- 题目复述 -->
+                            <div class="mb-6 p-4 bg-white rounded-lg shadow-sm">
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">题目复述</h3>
+                                <p id="problem-restatement" class="text-gray-700"></p>
+                            </div>
+                            
+                            <!-- 知识点 -->
+                            <div class="mb-6">
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">涉及知识点</h3>
+                                <div id="knowledge-points" class="flex flex-wrap gap-2">
+                                    <!-- 知识点标签将在这里动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 解题步骤 -->
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-medium text-gray-800">解题步骤</h3>
+                                    <div class="flex gap-2">
+                                        <button id="expand-all-btn" class="text-sm text-primary hover:text-blue-700 transition-all-300">
+                                            <i class="fa fa-expand mr-1"></i>展开全部
+                                        </button>
+                                        <button id="collapse-all-btn" class="text-sm text-primary hover:text-blue-700 transition-all-300">
+                                            <i class="fa fa-compress mr-1"></i>收起全部
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="solution-steps" class="space-y-4">
+                                    <!-- 解题步骤将在这里动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 答案总结 -->
+                            <div class="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-primary">
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">答案总结</h3>
+                                <p id="answer-summary" class="text-gray-700 font-medium"></p>
+                            </div>
+                            
+                            <!-- 其他解法 (可选) -->
+                            <div id="alternative-solutions" class="mb-6 hidden">
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">其他解法</h3>
+                                <div class="space-y-4">
+                                    <!-- 其他解法将在这里动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 相似题目推荐 (可选) -->
+                            <div id="similar-problems" class="mb-6 hidden">
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">相似题目推荐</h3>
+                                <div class="space-y-3">
+                                    <!-- 相似题目将在这里动态生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部信息 -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>© 2026 高中题目分析与解答系统 | 仅供学习使用</p>
+        </footer>
+    </div>
+
+    <!-- LaTeX渲染测试按钮 -->
+    <button id="render-latex-btn" class="fixed bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg z-50 hover:bg-red-600 transition-colors">
+        <i class="fa fa-refresh mr-1"></i>渲染LaTeX
+    </button>
+
+    <script>
+        // 全局LaTeX渲染函数
+        function renderAllMath() {
+            console.log('=== 开始渲染所有LaTeX公式 ===');
+            
+            if (typeof renderMathInElement === 'undefined') {
+                console.error('❌ renderMathInElement函数不可用！');
+                return;
+            }
+            
+            try {
+                // 获取所有需要渲染的元素
+                const elementsToRender = [
+                    document.getElementById('problem-restatement'),
+                    document.getElementById('answer-summary'),
+                    ...document.querySelectorAll('.step-content')
+                ].filter(el => el && el.textContent.includes('$'));
+                
+                console.log(`📋 找到${elementsToRender.length}个包含$符号的元素需要渲染`);
+                
+                elementsToRender.forEach((element, index) => {
+                    console.log(`📄 元素${index + 1} (${element.tagName}):`);
+                    console.log(`   内容片段: ${element.textContent.substring(0, 100)}...`);
+                    console.log(`   $符号数量: ${(element.textContent.match(/\$/g) || []).length}`);
+                    
+                    // 检查元素是否已经包含KaTeX渲染结果
+                    const existingKatex = element.querySelectorAll('.katex');
+                    if (existingKatex.length > 0) {
+                        console.log(`   ⚠️  该元素已经包含${existingKatex.length}个KaTeX元素，跳过渲染`);
+                        return;
+                    }
+                    
+                    try {
+                        // 渲染数学公式
+                        renderMathInElement(element, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ],
+                            throwOnError: false,
+                            trust: true,
+                            processEscapes: true,
+                            processEnvironments: true
+                        });
+                        
+                        // 检查渲染结果
+                        setTimeout(() => {
+                            const katexElements = element.querySelectorAll('.katex');
+                            console.log(`   ✅ 渲染完成，生成了${katexElements.length}个KaTeX元素`);
+                        }, 100);
+                        
+                    } catch (error) {
+                        console.error(`   ❌ 渲染失败: ${error.message}`);
+                    }
+                });
+                
+                console.log('=== LaTeX公式渲染完成 ===');
+            } catch (error) {
+                console.error('❌ 渲染过程出错:', error);
+            }
+        }
+
+        // 简单的Markdown解析函数（不转义$符号）
+        function simpleMarkdownParse(text) {
+            if (!text) return text;
+            
+            // 基本的Markdown解析，避免转义$符号
+            let result = text;
+            
+            // 解析标题
+            result = result.replace(/^### (.*$)/gm, '<h3 class="font-bold text-lg mb-2">$1</h3>');
+            result = result.replace(/^## (.*$)/gm, '<h2 class="font-bold text-xl mb-3">$1</h2>');
+            result = result.replace(/^# (.*$)/gm, '<h1 class="font-bold text-2xl mb-4">$1</h1>');
+            
+            // 解析粗体和斜体（避免影响$符号）
+            result = result.replace(/\*\*(.*?)\*\*(?![^<]*>)/g, '<strong>$1</strong>');
+            result = result.replace(/\*(.*?)\*(?![^<]*>)/g, '<em>$1</em>');
+            
+            // 解析代码块
+            result = result.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            
+            // 解析行内代码（避免影响$符号）
+            result = result.replace(/`([^`$]+?)`/g, '<code>$1</code>');
+            
+            // 解析列表
+            result = result.replace(/^\s*\*\s(.*$)/gm, '<li>$1</li>');
+            result = result.replace(/(<li>.*<\/li>)/g, '<ul class="list-disc pl-5 mb-2">$1</ul>');
+            
+            // 解析段落（在没有其他标签的行之间）
+            result = result.replace(/(?:^|\n\n)(?!<[a-z])((?!<[a-z]|\n\n).*?)(?=\n\n|$)/gs, '<p class="mb-2">$1</p>');
+            
+            // 清理多余的空行
+            result = result.replace(/\n{3,}/g, '\n\n');
+            
+            return result;
+        }
+
+        // 预设的题目和解答数据（包含行内LaTeX公式）
+        const problemDatabase = {
+            math: [
+                {
+                    problem: "已知函数 f(x)=x³-3x，回答:(1) 求单调区间与极值;(2) 方程 f(x)=k 有 3 个不同实根，求 k 的取值范围。",
+                    restatement: "已知函数 $f(x)=x^3-3x$，需要求解两个问题：(1) 函数的单调区间和极值；(2) 当方程 $f(x)=k$ 有3个不同实根时，参数 $k$ 的取值范围。",
+                    knowledgePoints: ["导数", "函数单调性", "极值", "方程的根"],
+                    difficulty: "中等",
+                    steps: [
+                        {
+                            title: "求导并找临界点",
+                            content: "首先求导：$f'(x)=3x^2-3=3(x^2-1)=3(x-1)(x+1)$。令 $f'(x)=0$，解得 $x=-1$ 和 $x=1$，这是函数的临界点。",
+                            expanded: true
+                        },
+                        {
+                            title: "分析函数单调性",
+                            content: "当 $x<-1$ 时，$f'(x)>0$，函数单调递增；当 $-1<x<1$ 时，$f'(x)<0$，函数单调递减；当 $x>1$ 时，$f'(x)>0$，函数单调递增。",
+                            expanded: true
+                        },
+                        {
+                            title: "求函数极值",
+                            content: "在 $x=-1$ 处，函数由增变减，取得极大值 $f(-1)=(-1)^3-3(-1)=-1+3=2$；在 $x=1$ 处，函数由减变增，取得极小值 $f(1)=1^3-3(1)=1-3=-2$。",
+                            expanded: true
+                        },
+                        {
+                            title: "分析方程的根的个数",
+                            content: "方程 $f(x)=k$ 有3个不同实根，等价于直线 $y=k$ 与曲线 $y=f(x)$ 有3个交点。根据函数的单调性和极值，当 $k$ 介于极小值和极大值之间时，直线与曲线有3个交点。",
+                            expanded: true
+                        },
+                        {
+                            title: "确定k的取值范围",
+                            content: "函数的极小值为 $-2$，极大值为 $2$，因此当 $-2<k<2$ 时，方程 $f(x)=k$ 有3个不同实根。",
+                            expanded: true
+                        }
+                    ],
+                    answer: "函数 $f(x)=x^3-3x$ 的单调递增区间为 $(-\\infty,-1)$ 和 $(1,+\\infty)$，单调递减区间为 $(-1,1)$；极大值为 $f(-1)=2$，极小值为 $f(1)=-2$。当方程 $f(x)=k$ 有3个不同实根时，$k$ 的取值范围是 $(-2,2)$。",
+                    alternativeSolutions: [
+                        {
+                            title: "图像法",
+                            content: "绘制函数 $f(x)=x^3-3x$ 的图像，观察其形状和关键点。函数在 $x=-1$ 处有极大值 $2$，在 $x=1$ 处有极小值 $-2$。当水平直线 $y=k$ 穿过这两个极值点之间时，与函数图像有3个交点，对应方程有3个实根。"
+                        }
+                    ],
+                    similarProblems: [
+                        {
+                            problem: "已知函数 $f(x)=x^3-3x^2+2$，求其单调区间、极值，并确定方程 $f(x)=a$ 有三个不同实根时 $a$ 的取值范围。",
+                            difficulty: "中等"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // DOM元素
+        const textInputBtn = document.getElementById('text-input-btn');
+        const imageInputBtn = document.getElementById('image-input-btn');
+        const textInputArea = document.getElementById('text-input-area');
+        const imageInputArea = document.getElementById('image-input-area');
+        const problemText = document.getElementById('problem-text');
+        const problemImage = document.getElementById('problem-image');
+        const imagePreview = document.getElementById('image-preview');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const initialPrompt = document.getElementById('initial-prompt');
+        const loadingState = document.getElementById('loading-state');
+        const solutionResult = document.getElementById('solution-result');
+        const problemRestatement = document.getElementById('problem-restatement');
+        const knowledgePoints = document.getElementById('knowledge-points');
+        const solutionSteps = document.getElementById('solution-steps');
+        const answerSummary = document.getElementById('answer-summary');
+        const alternativeSolutions = document.getElementById('alternative-solutions');
+        const similarProblems = document.getElementById('similar-problems');
+        const expandAllBtn = document.getElementById('expand-all-btn');
+        const collapseAllBtn = document.getElementById('collapse-all-btn');
+        const subjectBtns = document.querySelectorAll('.subject-btn');
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const renderLatexBtn = document.getElementById('render-latex-btn');
+
+        // 当前选中的学科和难度
+        let currentSubject = 'math';
+        let currentDifficulty = null;
+
+        // 输入方式切换
+        textInputBtn.addEventListener('click', () => {
+            textInputBtn.classList.add('active', 'text-primary', 'border-b-2', 'border-primary');
+            textInputBtn.classList.remove('text-gray-500');
+            imageInputBtn.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary');
+            imageInputBtn.classList.add('text-gray-500');
+            textInputArea.classList.remove('hidden');
+            imageInputArea.classList.add('hidden');
+        });
+
+        imageInputBtn.addEventListener('click', () => {
+            imageInputBtn.classList.add('active', 'text-primary', 'border-b-2', 'border-primary');
+            imageInputBtn.classList.remove('text-gray-500');
+            textInputBtn.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary');
+            textInputBtn.classList.add('text-gray-500');
+            imageInputArea.classList.remove('hidden');
+            textInputArea.classList.add('hidden');
+        });
+
+        // 图片上传预览
+        problemImage.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.querySelector('img').src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // 学科切换
+        subjectBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                subjectBtns.forEach(b => b.classList.remove('active', 'bg-blue-700'));
+                btn.classList.add('active', 'bg-blue-700');
+                currentSubject = btn.dataset.subject;
+                
+                // 清空输入和结果
+                problemText.value = '';
+                problemImage.value = '';
+                imagePreview.classList.add('hidden');
+                showInitialPrompt();
+            });
+        });
+
+        // 难度选择
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-primary', 'text-white');
+                    b.classList.add('border-gray-300', 'hover:border-primary', 'hover:text-primary');
+                });
+                btn.classList.add('active', 'bg-primary', 'text-white');
+                btn.classList.remove('border-gray-300', 'hover:border-primary', 'hover:text-primary');
+                currentDifficulty = btn.textContent.trim();
+            });
+        });
+
+        // 展开/收起所有步骤
+        expandAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('hidden');
+            });
+            document.querySelectorAll('.step-toggle').forEach(toggle => {
+                toggle.innerHTML = '<i class="fa fa-chevron-up mr-1"></i>收起';
+            });
+        });
+
+        collapseAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.step-toggle').forEach(toggle => {
+                toggle.innerHTML = '<i class="fa fa-chevron-down mr-1"></i>展开';
+            });
+        });
+
+        // LaTeX渲染按钮
+        renderLatexBtn.addEventListener('click', renderAllMath);
+
+        // API配置切换
+        const toggleApiConfigBtn = document.getElementById('toggle-api-config');
+        const apiConfigArea = document.getElementById('api-config-area');
+        const saveApiConfigBtn = document.getElementById('save-api-config');
+        const apiKeyInput = document.getElementById('api-key');
+        const apiEndpointInput = document.getElementById('api-endpoint');
+        const apiModelSelect = document.getElementById('api-model');
+        
+        // 加载保存的API配置
+        function loadApiConfig() {
+            const config = JSON.parse(localStorage.getItem('aiApiConfig')) || {};
+            apiKeyInput.value = config.apiKey || '';
+            apiEndpointInput.value = config.apiEndpoint || 'https://api.deepseek.com';
+            apiModelSelect.value = config.apiModel || 'deepseek-chat';
+        }
+        
+        // 保存API配置
+        function saveApiConfig() {
+            const config = {
+                apiKey: apiKeyInput.value,
+                apiEndpoint: apiEndpointInput.value,
+                apiModel: apiModelSelect.value
+            };
+            localStorage.setItem('aiApiConfig', JSON.stringify(config));
+            alert('API配置已保存');
+            apiConfigArea.classList.add('hidden');
+        }
+        
+        // 切换API配置区域显示
+        toggleApiConfigBtn.addEventListener('click', () => {
+            apiConfigArea.classList.toggle('hidden');
+            if (!apiConfigArea.classList.contains('hidden')) {
+                loadApiConfig();
+            }
+        });
+        
+        // 保存API配置
+        saveApiConfigBtn.addEventListener('click', saveApiConfig);
+        
+        // 调用AI API分析题目
+        async function callAiApi(problem, subject) {
+            const config = JSON.parse(localStorage.getItem('aiApiConfig')) || {};
+            
+            if (!config.apiKey) {
+                alert('请先配置API密钥');
+                return null;
+            }
+            
+            // 构建提示词（明确要求使用LaTeX格式）
+            const subjectName = {
+                math: '数学',
+                physics: '物理',
+                chemistry: '化学',
+                biology: '生物'
+            }[subject] || '数学';
+            
+            const prompt = `请作为一名高中${subjectName}老师，详细分析并解答以下题目。请按照以下格式输出：
+1. 题目复述：用简洁的语言复述题目要求
+2. 涉及知识点：列出题目涉及的主要知识点，用逗号分隔
+3. 解题步骤：分步骤详细解答，每一步要有标题和详细内容
+4. 答案总结：给出最终答案
+
+重要要求：
+- 所有数学公式必须使用LaTeX格式，行内公式用$包裹，块级公式用$$包裹
+- 例如：行内公式 $f(x) = x^2$，块级公式 $$\\int_{0}^{1} x^2 dx = \\frac{1}{3}$$
+- 向量用\\overrightarrow{}表示，例如：$\\overrightarrow{AB}$
+- 不要使用其他格式的公式表示
+
+题目：${problem}`;
+            
+            try {
+                // 根据模型类型确定API端点和请求格式
+                let apiUrl = config.apiEndpoint;
+                let requestBody = {};
+                
+                // 检查是否是DeepSeek模型
+                if (config.apiModel && config.apiModel.startsWith('deepseek-')) {
+                    // DeepSeek API配置
+                    apiUrl = apiUrl.endsWith('/') ? apiUrl + 'chat/completions' : apiUrl + '/chat/completions';
+                    requestBody = {
+                        model: config.apiModel,
+                        messages: [
+                            { role: 'system', content: `你是一名优秀的高中${subjectName}老师，擅长详细分析题目并提供清晰的解题步骤。请确保所有数学公式都使用正确的LaTeX格式。` },
+                            { role: 'user', content: prompt }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 2000,
+                        stream: false
+                    };
+                } else {
+                    // 其他模型的默认配置
+                    if (!apiUrl.endsWith('/chat/completions')) {
+                        apiUrl = apiUrl.endsWith('/') ? apiUrl + 'chat/completions' : apiUrl + '/chat/completions';
+                    }
+                    requestBody = {
+                        model: config.apiModel || 'gpt-3.5-turbo',
+                        messages: [
+                            { role: 'system', content: `你是一名优秀的高中${subjectName}老师，擅长详细分析题目并提供清晰的解题步骤。请确保所有数学公式都使用正确的LaTeX格式。` },
+                            { role: 'user', content: prompt }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 2000
+                    };
+                }
+                
+                console.log('API请求信息:', {
+                    url: apiUrl,
+                    model: config.apiModel,
+                    problemLength: problem.length
+                });
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${config.apiKey}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                // 记录响应状态
+                console.log('API响应状态:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    // 尝试获取详细错误信息
+                    let errorDetails = '';
+                    try {
+                        const errorData = await response.json();
+                        errorDetails = JSON.stringify(errorData);
+                    } catch (e) {
+                        errorDetails = await response.text();
+                    }
+                    throw new Error(`API调用失败: ${response.status} ${response.statusText}. 详细信息: ${errorDetails}`);
+                }
+                
+                const data = await response.json();
+                console.log('API响应数据:', data);
+                
+                // 处理响应，兼容不同API的格式
+                let aiResponse = '';
+                if (data.choices && data.choices.length > 0) {
+                    if (data.choices[0].message && data.choices[0].message.content) {
+                        aiResponse = data.choices[0].message.content;
+                    } else if (data.choices[0].text) {
+                        aiResponse = data.choices[0].text;
+                    } else {
+                        throw new Error('无法从API响应中提取内容');
+                    }
+                } else {
+                    throw new Error('API响应中没有找到choices字段');
+                }
+                
+                // 解析AI响应
+                return parseAiResponse(aiResponse);
+            } catch (error) {
+                console.error('API调用错误:', error);
+                alert(`API调用失败: ${error.message}`);
+                return null;
+            }
+        }
+        
+        // 解析AI响应
+        function parseAiResponse(response) {
+            try {
+                console.log('开始解析AI响应:', response.substring(0, 200) + '...');
+                
+                // 首先尝试按标准格式解析
+                let restatement = '';
+                let knowledgePoints = [];
+                let steps = [];
+                let answer = '';
+                
+                // 提取各个部分（使用更宽松的匹配方式）
+                const restatementMatch = response.match(/1[\.、]?\s*(?:题目复述|题目重述|题目大意)[：:]\s*(.+?)(?=\n2[\.、]|$)/s);
+                const knowledgePointsMatch = response.match(/2[\.、]?\s*(?:涉及知识点|知识点|考点)[：:]\s*(.+?)(?=\n3[\.、]|$)/s);
+                const stepsMatch = response.match(/3[\.、]?\s*(?:解题步骤|解答过程|解题过程)[：:]\s*(.+?)(?=\n4[\.、]|$)/s);
+                const answerMatch = response.match(/4[\.、]?\s*(?:答案总结|答案|总结)[：:]\s*(.+?)$/s);
+                
+                // 如果找到标准格式的各个部分
+                if (restatementMatch && knowledgePointsMatch && stepsMatch && answerMatch) {
+                    restatement = restatementMatch[1].trim();
+                    
+                    // 提取知识点（支持逗号、分号、顿号等分隔符）
+                    knowledgePoints = knowledgePointsMatch[1]
+                        .trim()
+                        .split(/[,，;；、]/)
+                        .map(point => point.trim())
+                        .filter(point => point.length > 0);
+                    
+                    // 提取解题步骤
+                    const stepsText = stepsMatch[1].trim();
+                    
+                    // 匹配步骤（支持多种格式）
+                    const stepRegex = /(?:步骤|第?\d+)[\.、:：]\s*([^：\n]+?)[：:]\s*\n(.+?)(?=\n(?:步骤|第?\d+)[\.、:：]|$)/gs;
+                    let stepMatch;
+                    
+                    while ((stepMatch = stepRegex.exec(stepsText)) !== null) {
+                        steps.push({
+                            title: stepMatch[1].trim(),
+                            content: stepMatch[2].trim(),
+                            expanded: true
+                        });
+                    }
+                    
+                    // 如果没有匹配到步骤，尝试其他格式或直接按段落分割
+                    if (steps.length === 0) {
+                        // 尝试按数字序号分割
+                        const stepParts = stepsText.split(/\n\d+[\.、:：]\s+/);
+                        if (stepParts.length > 1) {
+                            // 移除第一个空元素（如果有的话）
+                            if (stepParts[0].trim() === '') stepParts.shift();
+                            
+                            stepParts.forEach((part, index) => {
+                                if (part.trim()) {
+                                    const lines = part.trim().split('\n');
+                                    const title = lines[0].trim();
+                                    const content = lines.slice(1).join('\n').trim();
+                                    
+                                    steps.push({
+                                        title: title.endsWith('：') || title.endsWith(':') ? title.slice(0, -1).trim() : title,
+                                        content: content,
+                                        expanded: true
+                                    });
+                                }
+                            });
+                        } else {
+                            // 如果还是无法分割，将整个内容作为一个步骤
+                            steps.push({
+                                title: '解题过程',
+                                content: stepsText,
+                                expanded: true
+                            });
+                        }
+                    }
+                    
+                    answer = answerMatch[1].trim();
+                } else {
+                    // 如果没有找到标准格式，使用默认值
+                    restatement = '题目分析';
+                    knowledgePoints = ['待识别'];
+                    steps = [{
+                        title: '解题过程',
+                        content: response,
+                        expanded: true
+                    }];
+                    answer = '请查看解析';
+                }
+                
+                console.log('解析结果:', {
+                    restatement: restatement.substring(0, 50) + '...',
+                    knowledgePointsCount: knowledgePoints.length,
+                    stepsCount: steps.length,
+                    answer: answer.substring(0, 50) + '...'
+                });
+                
+                return {
+                    restatement,
+                    knowledgePoints,
+                    steps,
+                    answer,
+                    alternativeSolutions: [],
+                    similarProblems: []
+                };
+            } catch (error) {
+                console.error('解析AI响应错误:', error);
+                // 如果解析失败，返回原始响应作为一个步骤
+                return {
+                    restatement: '题目分析',
+                    knowledgePoints: ['待识别'],
+                    steps: [
+                        {
+                            title: 'AI解析',
+                            content: response,
+                            expanded: true
+                        }
+                    ],
+                    answer: '请查看解析',
+                    alternativeSolutions: [],
+                    similarProblems: []
+                };
+            }
+        }
+        
+        // 分析按钮点击事件
+        analyzeBtn.addEventListener('click', async () => {
+            const problem = problemText.value.trim();
+            
+            // 验证输入
+            if (!problem && imagePreview.classList.contains('hidden')) {
+                alert('请输入题目或上传图片');
+                return;
+            }
+            
+            // 显示加载状态
+            showLoadingState();
+            
+            try {
+                // 调用AI API
+                const solution = await callAiApi(problem, currentSubject);
+                
+                if (solution) {
+                    displaySolution(solution);
+                } else {
+                    // 如果API调用失败，尝试使用本地数据库
+                    const localSolution = findSolution(problem, currentSubject);
+                    if (localSolution) {
+                        console.log('使用本地数据库解析');
+                        displaySolution(localSolution);
+                    } else {
+                        showInitialPrompt();
+                    }
+                }
+            } catch (error) {
+                console.error('分析过程错误:', error);
+                alert(`分析过程出错: ${error.message}`);
+                showInitialPrompt();
+            }
+        });
+
+        // 从数据库中查找匹配的题目解答
+        function findSolution(problem, subject) {
+            // 在实际应用中，这里应该使用更复杂的匹配算法
+            // 这里我们简单地返回第一个匹配的题目
+            const problems = problemDatabase[subject] || [];
+            
+            // 如果用户输入了题目，尝试匹配
+            if (problem) {
+                for (const p of problems) {
+                    if (problem.includes(p.problem.substring(0, 10))) {
+                        return p;
+                    }
+                }
+            }
+            
+            // 如果没有匹配或用户上传了图片，返回第一个题目
+            return problems.length > 0 ? problems[0] : null;
+        }
+
+        // 显示初始提示
+        function showInitialPrompt() {
+            initialPrompt.classList.remove('hidden');
+            loadingState.classList.add('hidden');
+            solutionResult.classList.add('hidden');
+        }
+
+        // 显示加载状态
+        function showLoadingState() {
+            initialPrompt.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            solutionResult.classList.add('hidden');
+        }
+
+        // 显示解题结果
+        function displaySolution(solution) {
+            if (!solution) {
+                alert('无法解析题目，请检查输入或尝试其他题目');
+                showInitialPrompt();
+                return;
+            }
+            
+            console.log('开始显示解题结果...');
+            
+            // 填充题目复述
+            problemRestatement.innerHTML = simpleMarkdownParse(solution.restatement);
+            
+            // 填充知识点
+            knowledgePoints.innerHTML = '';
+            solution.knowledgePoints.forEach(point => {
+                const tag = document.createElement('span');
+                tag.className = 'px-3 py-1 bg-blue-100 text-primary rounded-full text-sm';
+                tag.textContent = point;
+                knowledgePoints.appendChild(tag);
+            });
+            
+            // 填充解题步骤
+            solutionSteps.innerHTML = '';
+            solution.steps.forEach((step, index) => {
+                const stepItem = document.createElement('div');
+                stepItem.className = 'step-item pl-8';
+                
+                const stepHeader = document.createElement('div');
+                stepHeader.className = 'flex justify-between items-center mb-2';
+                
+                const stepTitle = document.createElement('div');
+                stepTitle.className = 'flex items-center';
+                
+                const stepNumber = document.createElement('div');
+                stepNumber.className = 'step-number w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-2';
+                stepNumber.textContent = index + 1;
+                
+                const stepTitleText = document.createElement('h4');
+                stepTitleText.className = 'font-medium text-gray-800';
+                stepTitleText.textContent = step.title;
+                
+                stepTitle.appendChild(stepNumber);
+                stepTitle.appendChild(stepTitleText);
+                
+                const stepToggle = document.createElement('button');
+                stepToggle.className = 'step-toggle text-sm text-primary hover:text-blue-700 transition-all-300';
+                stepToggle.innerHTML = step.expanded ? 
+                    '<i class="fa fa-chevron-up mr-1"></i>收起' : 
+                    '<i class="fa fa-chevron-down mr-1"></i>展开';
+                
+                stepToggle.addEventListener('click', () => {
+                    const content = stepItem.querySelector('.step-content');
+                    if (content.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        stepToggle.innerHTML = '<i class="fa fa-chevron-up mr-1"></i>收起';
+                        
+                        // 展开时重新渲染LaTeX
+                        setTimeout(() => {
+                            renderAllMath();
+                        }, 100);
+                    } else {
+                        content.classList.add('hidden');
+                        stepToggle.innerHTML = '<i class="fa fa-chevron-down mr-1"></i>展开';
+                    }
+                });
+                
+                stepHeader.appendChild(stepTitle);
+                stepHeader.appendChild(stepToggle);
+                
+                const stepContent = document.createElement('div');
+                stepContent.className = `step-content ${step.expanded ? '' : 'hidden'} pl-8 pb-4`;
+                
+                // 使用自定义的简单Markdown解析器，避免转义$符号
+                try {
+                    const parsedContent = simpleMarkdownParse(step.content);
+                    stepContent.innerHTML = parsedContent;
+                    console.log(`步骤${index + 1}内容解析完成，$符号数量: ${(step.content.match(/\$/g) || []).length}`);
+                } catch (error) {
+                    console.error('解析步骤内容错误:', error);
+                    stepContent.innerHTML = `<p class="text-gray-700">${step.content}</p>`;
+                }
+                
+                stepItem.appendChild(stepHeader);
+                stepItem.appendChild(stepContent);
+                solutionSteps.appendChild(stepItem);
+            });
+            
+            // 填充答案总结
+            answerSummary.innerHTML = simpleMarkdownParse(solution.answer);
+            
+            // 处理其他解法
+            if (solution.alternativeSolutions && solution.alternativeSolutions.length > 0) {
+                alternativeSolutions.classList.remove('hidden');
+                const altSolutionsContainer = alternativeSolutions.querySelector('.space-y-4');
+                altSolutionsContainer.innerHTML = '';
+                
+                solution.alternativeSolutions.forEach((alt, index) => {
+                    const altSolutionDiv = document.createElement('div');
+                    altSolutionDiv.className = 'p-4 bg-white rounded-lg shadow-sm';
+                    
+                    const altTitle = document.createElement('h4');
+                    altTitle.className = 'font-medium text-gray-800 mb-2';
+                    altTitle.textContent = `解法${index + 2}：${alt.title}`;
+                    
+                    const altContent = document.createElement('div');
+                    altContent.className = 'text-gray-700';
+                    
+                    try {
+                        const parsedAltContent = simpleMarkdownParse(alt.content);
+                        altContent.innerHTML = parsedAltContent;
+                    } catch (error) {
+                        console.error('解析其他解法内容错误:', error);
+                        altContent.textContent = alt.content;
+                    }
+                    
+                    altSolutionDiv.appendChild(altTitle);
+                    altSolutionDiv.appendChild(altContent);
+                    altSolutionsContainer.appendChild(altSolutionDiv);
+                });
+            } else {
+                alternativeSolutions.classList.add('hidden');
+            }
+            
+            // 处理相似题目
+            if (solution.similarProblems && solution.similarProblems.length > 0) {
+                similarProblems.classList.remove('hidden');
+                const similarContainer = similarProblems.querySelector('.space-y-3');
+                similarContainer.innerHTML = '';
+                
+                solution.similarProblems.forEach((similar, index) => {
+                    const similarDiv = document.createElement('div');
+                    similarDiv.className = 'p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all-300 cursor-pointer';
+                    
+                    const similarHeader = document.createElement('div');
+                    similarHeader.className = 'flex justify-between items-center mb-1';
+                    
+                    const similarTitle = document.createElement('h4');
+                    similarTitle.className = 'font-medium text-gray-800';
+                    similarTitle.textContent = `相似题目${index + 1}`;
+                    
+                    const similarDifficulty = document.createElement('span');
+                    similarDifficulty.className = 'px-2 py-0.5 text-xs rounded-full';
+                    
+                    // 根据难度设置不同的样式
+                    switch (similar.difficulty) {
+                        case '基础':
+                            similarDifficulty.className += ' bg-green-100 text-green-800';
+                            break;
+                        case '中等':
+                            similarDifficulty.className += ' bg-yellow-100 text-yellow-800';
+                            break;
+                        case '困难':
+                            similarDifficulty.className += ' bg-red-100 text-red-800';
+                            break;
+                        default:
+                            similarDifficulty.className += ' bg-gray-100 text-gray-800';
+                    }
+                    similarDifficulty.textContent = similar.difficulty;
+                    
+                    similarHeader.appendChild(similarTitle);
+                    similarHeader.appendChild(similarDifficulty);
+                    
+                    const similarContent = document.createElement('p');
+                    similarContent.className = 'text-gray-700 text-sm';
+                    similarContent.textContent = similar.problem;
+                    
+                    // 点击相似题目时加载该题目
+                    similarDiv.addEventListener('click', () => {
+                        problemText.value = similar.problem;
+                        textInputBtn.click(); // 切换到文本输入模式
+                        analyzeBtn.click(); // 触发分析
+                    });
+                    
+                    similarDiv.appendChild(similarHeader);
+                    similarDiv.appendChild(similarContent);
+                    similarContainer.appendChild(similarDiv);
+                });
+            } else {
+                similarProblems.classList.add('hidden');
+            }
+            
+            // 显示结果
+            initialPrompt.classList.add('hidden');
+            loadingState.classList.add('hidden');
+            solutionResult.classList.remove('hidden');
+            
+            // 延迟执行LaTeX渲染，确保DOM完全加载
+            setTimeout(() => {
+                console.log('延迟渲染LaTeX公式...');
+                renderAllMath();
+            }, 500);
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            // 默认选中数学学科
+            subjectBtns[0].click();
+            
+            // 添加一些示例题目到文本框，方便用户测试
+            problemText.placeholder = `示例题目：
+已知函数 f(x)=x³-3x，回答:
+(1) 求单调区间与极值;
+(2) 方程 f(x)=k 有 3 个不同实根，求 k 的取值范围。`;
+            
+            // 测试LaTeX渲染环境
+            console.log('页面加载完成，检查渲染环境:');
+            console.log('KaTeX版本:', typeof katex !== 'undefined' ? katex.version : '未加载');
+            console.log('renderMathInElement可用:', typeof renderMathInElement !== 'undefined');
+            
+            console.log('系统初始化完成');
+        });
+    </script>
+</body>
+</html>

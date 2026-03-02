@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数学公式渲染测试</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for fast math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <!-- markdown-it for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+    <!-- markdown-it-katex plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-katex@2.0.3/dist/markdown-it-katex.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">数学公式渲染测试</h1>
+        
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">测试内容</h2>
+            <textarea id="markdown-input" class="w-full h-64 p-4 border border-gray-300 rounded-lg" placeholder="请输入包含LaTeX公式的Markdown内容...">
+# 数学公式测试
+
+## 行内公式
+这是一个行内公式：$E = mc^2$
+
+这是另一个行内公式：$\int_{a}^{b} f(x) \, dx$
+
+## 块级公式
+$$f(x) = x^3 - 3x$$
+
+$$\frac{d}{dx} \left( \int_{a}^{x} f(t) \, dt \right) = f(x)$$
+
+## 方程组
+$$
+\begin{cases}
+x + y = 5 \\
+2x - y = 1
+\end{cases}
+$$
+
+## 矩阵
+$$
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+$$
+
+## 其他数学符号
+$$\lim_{x \to \infty} \frac{1}{x} = 0$$
+
+$$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
+</textarea>
+        </div>
+        
+        <button id="render-btn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            渲染公式
+        </button>
+        
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">渲染结果</h2>
+            <div id="rendered-output" class="p-4 border border-gray-300 rounded-lg min-h-64"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('render-btn').addEventListener('click', function() {
+            const markdownText = document.getElementById('markdown-input').value;
+            
+            try {
+                // 检查markdown-it是否加载
+                if (typeof window.markdownit === 'function') {
+                    console.log('markdown-it loaded successfully');
+                    
+                    let md;
+                    
+                    // 尝试使用KaTeX插件
+                    if (typeof window.markdownitKatex === 'function') {
+                        console.log('markdown-it-katex plugin loaded successfully');
+                        md = window.markdownit({
+                            html: true,
+                            linkify: true,
+                            typographer: true
+                        }).use(window.markdownitKatex);
+                    } else {
+                        console.warn('markdown-it-katex plugin not available, using basic markdown-it');
+                        md = window.markdownit({
+                            html: true,
+                            linkify: true,
+                            typographer: true
+                        });
+                    }
+                    
+                    // 渲染Markdown
+                    const htmlContent = md.render(markdownText);
+                    document.getElementById('rendered-output').innerHTML = htmlContent;
+                    
+                    // 如果没有使用KaTeX插件，尝试手动渲染数学公式
+                    if (typeof window.markdownitKatex !== 'function' && typeof katex !== 'undefined') {
+                        console.log('Attempting to render math formulas manually with KaTeX');
+                        renderMathInElement(document.getElementById('rendered-output'));
+                    }
+                    
+                } else {
+                    console.error('markdown-it not loaded');
+                    document.getElementById('rendered-output').innerHTML = '<p class="text-red-500">Error: markdown-it library not loaded</p>';
+                }
+            } catch (error) {
+                console.error('Error during rendering:', error);
+                document.getElementById('rendered-output').innerHTML = `<p class="text-red-500">Error: ${error.message}</p>`;
+            }
+        });
+        
+        // 手动渲染数学公式的函数
+        function renderMathInElement(element) {
+            if (typeof katex === 'undefined') {
+                console.error('KaTeX not loaded');
+                return;
+            }
+            
+            // 查找所有包含 $ 符号的文本节点
+            const textNodes = getTextNodesIn(element);
+            textNodes.forEach(node => {
+                const text = node.textContent;
+                const parent = node.parentNode;
+                
+                // 处理行内公式 $...$
+                const inlineRegex = /\$(.*?)\$/g;
+                let match;
+                let lastIndex = 0;
+                let fragment = document.createDocumentFragment();
+                
+                while ((match = inlineRegex.exec(text)) !== null) {
+                    // 添加公式前的文本
+                    if (match.index > lastIndex) {
+                        fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
+                    }
+                    
+                    // 创建公式元素
+                    const formulaElement = document.createElement('span');
+                    try {
+                        katex.render(match[1], formulaElement, {
+                            throwOnError: false,
+                            displayMode: false
+                        });
+                        fragment.appendChild(formulaElement);
+                    } catch (error) {
+                        console.error('KaTeX rendering error:', error);
+                        fragment.appendChild(document.createTextNode(match[0]));
+                    }
+                    
+                    lastIndex = match.index + match[0].length;
+                }
+                
+                // 添加剩余文本
+                if (lastIndex < text.length) {
+                    fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+                }
+                
+                // 替换原始节点
+                if (fragment.childNodes.length > 0) {
+                    parent.replaceChild(fragment, node);
+                }
+            });
+        }
+        
+        // 获取元素内所有文本节点
+        function getTextNodesIn(element) {
+            const textNodes = [];
+            const walk = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let node;
+            while (node = walk.nextNode()) {
+                textNodes.push(node);
+            }
+            
+            return textNodes;
+        }
+        
+        // 页面加载完成后自动渲染一次
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking libraries...');
+            console.log('markdown-it available:', typeof window.markdownit === 'function');
+            console.log('markdown-it-katex available:', typeof window.markdownitKatex === 'function');
+            console.log('KaTeX available:', typeof katex !== 'undefined');
+            
+            document.getElementById('render-btn').click();
+        });
+    </script>
+</body>
+</html>

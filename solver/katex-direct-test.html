@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直接KaTeX测试</title>
+    <!-- 只加载KaTeX，不加载其他库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+</head>
+<body style="padding: 20px;">
+    <h1>直接KaTeX渲染测试</h1>
+    
+    <div id="math-content">
+        <p>测试向量公式：$\overrightarrow{AB} + \overrightarrow{CD}$</p>
+        <p>测试平方根：$\sqrt{12} = 2\sqrt{3}$</p>
+        <p>测试分式：$\frac{a+b}{c+d}$</p>
+        <p>测试块级公式：</p>
+        <p>$$\boxed{2\sqrt{3}}$$</p>
+        <p>测试方括号公式：</p>
+        <p>[ \overrightarrow{AB} + \overrightarrow{AF} + \overrightarrow{CD} = (-3, -\sqrt{3}) ]</p>
+    </div>
+
+    <script>
+        // 页面加载完成后立即渲染
+        window.onload = function() {
+            console.log('页面加载完成，开始渲染LaTeX...');
+            
+            // 等待1秒确保KaTeX完全加载
+            setTimeout(function() {
+                if (typeof renderMathInElement !== 'undefined') {
+                    console.log('开始渲染数学公式...');
+                    
+                    renderMathInElement(document.getElementById('math-content'), {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false},
+                            {left: '[', right: ']', display: true}
+                        ],
+                        throwOnError: false,
+                        trust: true
+                    });
+                    
+                    console.log('LaTeX渲染完成！');
+                } else {
+                    console.error('renderMathInElement函数不可用！');
+                }
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
